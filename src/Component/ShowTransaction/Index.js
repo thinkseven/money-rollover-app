@@ -1,29 +1,35 @@
-import React, { Component } from 'react';
-import transactions from './Transactions'
+import React from 'react';
+import Transactions from './Transactions'
 
 const Transaction = (props) => {
-  if (props.transactions.length == 2) {
+  if (props.transactions.length === 2) {
     return props.transactions.map((transaction, index) => {
-      return <td>{transaction.Amount}</td>
+      return <td>{transaction.amount}</td>
     })
-  } else if (props.transactions.length == 1) {
+  } else if (props.transactions.length === 1) {
     return props.transactions.map((transaction, index) => {
-      if (transaction.ToAccount == 1) {
+      if (transaction.toAccount === 1) {
         return (
           <React.Fragment>
-            <td>{transaction.Amount}</td>
+            <td>{transaction.amount}</td>
             <td></td>
           </React.Fragment>
         )
       }
-      if (transaction.ToAccount == 2) {
+      if (transaction.toAccount === 2) {
         return (
           <React.Fragment>
             <td></td>
-            <td>{transaction.Amount}</td>
+            <td>{transaction.amount}</td>
           </React.Fragment>
         )
       }
+      return (
+        <React.Fragment>
+          <td></td>
+          <td></td>
+        </React.Fragment>
+      )
     })
   }
   return (
@@ -71,17 +77,17 @@ const ShowTransaction = () => {
         </thead>
         <tbody>
           {
-            transactions.map((entry, index) => {
+            Transactions.map((entry, index) => {
               return (
                 <tr key={index}>
-                  <td>{entry.NameOfTransaction}</td>
-                  <td>{entry.DateOfTransaction}</td>
-                  <td>{entry.DueAmount}</td>
+                  <td>{entry.nameOfTransaction}</td>
+                  <td>{entry.dateOfTransaction}</td>
+                  <td>{entry.dueAmount}</td>
                   <Transaction transactions={entry.transactions}></Transaction>
-                  <td>{entry.RolloverBalance1}</td>
-                  <td>{entry.RolloverBalance2}</td>
-                  <td>{entry.RolloverBalance1 + entry.RolloverBalance2}</td>
-                  <td>{entry.Comments}</td>
+                  <td>{parseFloat(entry.rolloverBalance1).toFixed(2)}</td>
+                  <td>{parseFloat(entry.rolloverBalance2).toFixed(2)}</td>
+                  <td>{parseFloat(entry.rolloverBalance1 + entry.rolloverBalance2).toFixed(2)}</td>
+                  <td>{entry.comments}</td>
                 </tr>
               )
             })
