@@ -10,3 +10,9 @@ th {
   text-align: left;
   padding: 8px;
 }
+
+.credit {
+  font-size: large;
+  color: green;
+  font-weight: 600;
+}

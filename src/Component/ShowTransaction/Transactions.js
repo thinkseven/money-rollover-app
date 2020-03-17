@@ -174,6 +174,64 @@ const transactions = [
                 type: "Debit"
             }
         ]
+    },
+    {
+        nameOfTransaction: "BJ’s CC",
+        dueAmount: 551.90,
+        dateOfTransaction: "02/10/2020",
+        transactions: [
+            {
+                toAccount: 2,
+                amount: 275.95,
+                type: "Debit"
+            },
+            {
+                toAccount: 1,
+                amount: 275.95,
+                type: "Debit"
+            }
+        ]
+    },
+    {
+        nameOfTransaction: "Macy’s CC",
+        dueAmount: 3.57,
+        dateOfTransaction: "02/13/2020",
+        transactions: [
+            {
+                toAccount: 2,
+                amount: 3.57,
+                type: "Debit"
+            }
+        ]
+    },
+    {
+        nameOfTransaction: "Honda CC",
+        dueAmount: 476.49,
+        dateOfTransaction: "02/15/2020",
+        transactions: [
+            {
+                toAccount: 2,
+                amount: 238.49,
+                type: "Debit"
+            },
+            {
+                toAccount: 1,
+                amount: 238,
+                type: "Debit"
+            }
+        ]
+    },
+    {
+        nameOfTransaction: "Banana Republic CC",
+        dueAmount: 100.91,
+        dateOfTransaction: "02/20/2020",
+        transactions: [
+            {
+                toAccount: 1,
+                amount: 100.91,
+                type: "Debit"
+            }
+        ]
     }
 ]
 

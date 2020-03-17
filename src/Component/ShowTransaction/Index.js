@@ -4,14 +4,14 @@ import Transactions from './Transactions'
 const Transaction = (props) => {
   if (props.transactions.length === 2) {
     return props.transactions.map((transaction, index) => {
-      return <td>{transaction.amount}</td>
+      return <td className={transaction.type === 'Credit' ? 'credit' : ''}>{transaction.amount}</td>
     })
   } else if (props.transactions.length === 1) {
     return props.transactions.map((transaction, index) => {
       if (transaction.toAccount === 1) {
         return (
           <React.Fragment>
-            <td>{transaction.amount}</td>
+            <td className={transaction.type === 'Credit' ? 'credit' : ''}>{transaction.amount}</td>
             <td></td>
           </React.Fragment>
         )
@@ -20,7 +20,7 @@ const Transaction = (props) => {
         return (
           <React.Fragment>
             <td></td>
-            <td>{transaction.amount}</td>
+            <td className={transaction.type === 'Credit' ? 'credit' : ''}>{transaction.amount}</td>
           </React.Fragment>
         )
       }
