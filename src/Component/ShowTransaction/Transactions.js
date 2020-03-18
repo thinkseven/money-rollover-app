@@ -202,7 +202,45 @@ const getTransactions = () => {
             current.transactions.forEach((trans) => {
                 if (y <= x) {
                     if (trans.toAccount === 2 && trans.type === "Debit") {
-                        debugger;
+                        accumulator = accumulator - trans.amount;
+                    }
+                    if (trans.toAccount === 2 && trans.type === "Credit") {
+                        accumulator = accumulator + trans.amount;
+                    }
+                }
+            })
+            return accumulator;
+        }, 0);
+
+        return Object.assign(entry, {
+            rolloverBalance1,
+            rolloverBalance2
+        });
+    })
+}
+
+export const processTransaction = (transactions) => {
+    const newTransactions = [...transactions];
+    return newTransactions.map((entry, x) => {
+
+        let rolloverBalance1 = newTransactions.reduce((accumulator, current, y) => {
+            current.transactions.forEach((trans) => {
+                if (y <= x) {
+                    if (trans.toAccount === 1 && trans.type === "Debit") {
+                        accumulator = accumulator - trans.amount
+                    }
+                    if (trans.toAccount === 1 && trans.type === "Credit") {
+                        accumulator = accumulator + trans.amount
+                    }
+                }
+            })
+            return accumulator;
+        }, 0);
+
+        let rolloverBalance2 = newTransactions.reduce((accumulator, current, y) => {
+            current.transactions.forEach((trans) => {
+                if (y <= x) {
+                    if (trans.toAccount === 2 && trans.type === "Debit") {
                         accumulator = accumulator - trans.amount;
                     }
                     if (trans.toAccount === 2 && trans.type === "Credit") {

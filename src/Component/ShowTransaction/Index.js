@@ -1,16 +1,15 @@
 import React from 'react';
-import Transactions from './Transactions'
 
 const Transaction = (props) => {
   if (props.transactions.length === 2) {
     return props.transactions.map((transaction, index) => {
-      return <td className={transaction.type === 'Credit' ? 'credit' : ''}>{transaction.amount}</td>
+      return <td key={index} className={transaction.type === 'Credit' ? 'credit' : ''}>{transaction.amount}</td>
     })
   } else if (props.transactions.length === 1) {
     return props.transactions.map((transaction, index) => {
       if (transaction.toAccount === 1) {
         return (
-          <React.Fragment>
+          <React.Fragment key={index}>
             <td className={transaction.type === 'Credit' ? 'credit' : ''}>{transaction.amount}</td>
             <td></td>
           </React.Fragment>
@@ -18,7 +17,7 @@ const Transaction = (props) => {
       }
       if (transaction.toAccount === 2) {
         return (
-          <React.Fragment>
+          <React.Fragment key={index}>
             <td></td>
             <td className={transaction.type === 'Credit' ? 'credit' : ''}>{transaction.amount}</td>
           </React.Fragment>
@@ -40,7 +39,7 @@ const Transaction = (props) => {
   )
 }
 
-const ShowTransaction = () => {
+const ShowTransaction = (props) => {
   return (
     <div>
       <table>
@@ -77,7 +76,7 @@ const ShowTransaction = () => {
         </thead>
         <tbody>
           {
-            Transactions.map((entry, index) => {
+            props.transactions.map((entry, index) => {
               return (
                 <tr key={index}>
                   <td>{entry.nameOfTransaction}</td>
