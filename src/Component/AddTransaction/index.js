@@ -4,6 +4,8 @@ class AddTransaction extends Component {
 
     state = {
         account: {},
+        dueAmount: null,
+        showSplit: false,
         amount1: null,
         amount2: null
     }
@@ -16,6 +18,8 @@ class AddTransaction extends Component {
         if (account) {
             this.setState({
                 account: account,
+                dueAmount: null,
+                showSplit: false,
                 amount1: null,
                 amount2: null
             })
@@ -30,12 +34,27 @@ class AddTransaction extends Component {
         });
     }
 
+    splitAmount = (event) => {
+        if (typeof (this.state.account.billedTo) === 'object') {
+            this.setState({
+                showSplit: true,
+                amount1: parseFloat(this.state.dueAmount / 2).toFixed(2),
+                amount2: parseFloat(this.state.dueAmount / 2).toFixed(2)
+            })
+        }
+        else {
+            this.setState({
+                amount1: this.state.dueAmount
+            })
+        }
+    }
+
     addTransaction = (event) => {
         event.preventDefault();
 
         let transaction = {
             nameOfTransaction: this.state.account.name,
-            dueAmount: this.state.amount1,
+            dueAmount: this.state.dueAmount,
             dateOfTransaction: "02/01/2020"
         }
 
@@ -90,7 +109,6 @@ class AddTransaction extends Component {
     render() {
         return (
             <form onSubmit={this.addTransaction}>
-                <div>{JSON.stringify(this.state)}</div>
                 <div>
                     <div style={{
                         display: 'inline'
@@ -108,25 +126,35 @@ class AddTransaction extends Component {
                                 }
                             </select>
                         </label>
-
                     </div>
                     <div style={{
                         display: 'inline'
                     }}>
                         <label>
-                            Amount
-                            <input type='text' name='amount1' onChange={this.setAmount}
-                            />
+                            Due Amount
+                            <input type='text' name='dueAmount' onChange={this.setAmount} onBlur={this.splitAmount} />
                         </label>
                     </div>
-                    <div style={{
-                        display: (typeof (this.state.account.billedTo) === 'object' ? 'inline' : 'none')
-                    }}>
-                        <label>
-                            Amount
-                            <input type='text' name='amount2' onChange={this.setAmount} />
-                        </label>
-                    </div>
+                    {
+                        this.state.showSplit && <div>
+                            <div style={{
+                                display: 'inline'
+                            }}>
+                                <label>
+                                    Amount
+                            <input type='text' name='amount1' onChange={this.setAmount} value={this.state.amount1} />
+                                </label>
+                            </div>
+                            <div style={{
+                                display: 'inline'
+                            }}>
+                                <label>
+                                    Amount
+                            <input type='text' name='amount2' onChange={this.setAmount} value={this.state.amount2} />
+                                </label>
+                            </div>
+                        </div>
+                    }
                     <div style={{
                         display: 'inline'
                     }}>

@@ -9,8 +9,9 @@ import ShowTransaction from './Component/ShowTransaction'
 class App extends Component {
 
   state = {
+    loading: true,
     Accounts: [],
-    Transactions: [],
+    Transactions: []
   }
 
   setTransaction = (transactionInfo) => {
@@ -20,25 +21,36 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    this.setState({
-      Accounts: Accounts,
-      Transactions: Transactions,
-    })
+    setTimeout(() => {
+      this.setState({
+        loading: false,
+        Accounts: Accounts,
+        Transactions: Transactions,
+      })
+    }, 3000);
   }
 
   render() {
     return (
       <div>
-        <div style={{
-          margin: '10px 0 0 10px'
-        }}>
-          <AddTransaction accounts={this.state.Accounts} setTransaction={this.setTransaction} />
-        </div>
-        <div style={{
-          margin: '10px 0 0 10px'
-        }}>
-          <ShowTransaction transactions={this.state.Transactions} />
-        </div>
+        {
+          this.state.loading ? <div style={{
+            margin: '10px 0 0 10px',
+          }}>
+            Loading ....
+          </div> : <div>
+              <div style={{
+                margin: '10px 0 0 10px',
+              }}>
+                <AddTransaction accounts={this.state.Accounts} setTransaction={this.setTransaction} />
+              </div>
+              <div style={{
+                margin: '10px 0 0 10px',
+              }}>
+                <ShowTransaction transactions={this.state.Transactions} />
+              </div>
+            </div>
+        }
       </div>
     )
   }
