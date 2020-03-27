@@ -1,90 +1,96 @@
-import React, { Component } from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import React, { useState } from 'react';
 import './App.css';
-import ShowAccount from './Component/Accounts'
-import ShowTransaction from './Component/Transaction'
+import Rollover from './Component/Dashboard/Rollover'
+import ShowTransaction from './Component/Transaction/Show'
+import ShowAccount from './Component/Accounts/Show'
+import AddTransaction from './Component/Transaction/Add';
 
 function App() {
-  return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/Account">Accounts</Link>
-            </li>
-          </ul>
-        </nav>
 
-        <Switch>
-          <Route path="/Account">
-            <ShowAccount />
-          </Route>
-          <Route path="/">
-            <ShowTransaction />
-          </Route>
-        </Switch>
+  const [currentSelection, setSelection] = useState('0');
+
+  return (
+    <div>
+      <div>
+        <label>
+          <input
+            type="radio"
+            name="selection"
+            value="0"
+            checked={currentSelection === "0"}
+            onChange={(event) => {
+              setSelection(event.target.value)
+            }}
+          />
+          Dashboard
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="selection"
+            value="1"
+            checked={currentSelection === "1"}
+            onChange={(event) => {
+              setSelection(event.target.value)
+            }}
+          />
+          Show Transaction
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="selection"
+            value="2"
+            checked={currentSelection === "2"}
+            onChange={(event) => {
+              setSelection(event.target.value)
+            }}
+          />
+          Add Transaction
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="selection"
+            value="3"
+            checked={currentSelection === "3"}
+            onChange={(event) => {
+              setSelection(event.target.value)
+            }}
+          />
+          Show Account
+        </label>
       </div>
-    </Router>
+      {
+        currentSelection === "0" && (
+          <div>
+            <Rollover />
+          </div>
+        )
+      }
+      {
+        currentSelection === "1" && (
+          <div>
+            <ShowTransaction />
+          </div>
+        )
+      }
+      {
+        currentSelection === "2" && (
+          <div>
+            <AddTransaction />
+          </div>
+        )
+      }
+      {
+        currentSelection === "3" && (
+          <div>
+            <ShowAccount />
+          </div>
+        )
+      }
+    </div>
   );
 }
-
-// class App extends Component {
-
-//   state = {
-//     loading: true,
-//     Accounts: [],
-//     Transactions: []
-//   }
-
-//   setTransaction = (transactionInfo) => {
-//     this.setState({
-//       Transactions: processTransaction([...this.state.Transactions, transactionInfo])
-//     })
-//   }
-
-//   componentDidMount = () => {
-//     setTimeout(() => {
-//       this.setState({
-//         loading: false,
-//         Accounts: Accounts,
-//         Transactions: Transactions,
-//       })
-//     }, 3000);
-//   }
-
-//   render() {
-//     return (
-//       <div>
-//         {
-//           this.state.loading ? <div style={{
-//             margin: '10px 0 0 10px',
-//           }}>
-//             Loading ....
-//           </div> : <div>
-//               <div style={{
-//                 margin: '10px 0 0 10px',
-//               }}>
-//                 <AddTransaction accounts={this.state.Accounts} setTransaction={this.setTransaction} />
-//               </div>
-//               <div style={{
-//                 margin: '10px 0 0 10px',
-//               }}>
-//                 <ShowTransaction transactions={this.state.Transactions} />
-//               </div>
-//             </div>
-//         }
-//       </div>
-//     )
-//   }
-// }
 
 export default App;
