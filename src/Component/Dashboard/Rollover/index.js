@@ -59,23 +59,23 @@ const Transaction = (props) => {
   if (props.accountId === 1) {
     return (
       <React.Fragment>
-        <td className={!props.transactionType ? 'credit' : ''}>{props.amount}</td>
-        <td></td>
+        <td class="border px-4 py-2">{props.amount}</td>
+        <td class="border px-4 py-2"></td>
       </React.Fragment>
     )
   }
   if (props.accountId === 9) {
     return (
       <React.Fragment>
-        <td></td>
-        <td className={!props.transactionType ? 'credit' : ''}>{props.amount}</td>
+        <td class="border px-4 py-2"></td>
+        <td class="border px-4 py-2">{props.amount}</td>
       </React.Fragment>
     )
   }
   return (
     <React.Fragment>
-      <td></td>
-      <td></td>
+      <td class="border px-4 py-2"></td>
+      <td class="border px-4 py-2"></td>
     </React.Fragment>
   )
 }
@@ -109,37 +109,37 @@ const ShowTransaction = () => {
 
   return (
     <div>
-      <table>
+      <table class="table-auto border-collapse border-2 border-gray-500">
         <thead>
           <tr>
-            <th>
+            <th class="border px-4 py-2">
               Transaction Id
             </th>
-            <th>
+            <th class="border px-4 py-2"> 
               Name
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Transaction Date
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Amount
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Bank of America
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Chase
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Rollover Balance
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Rollover Balance
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Total
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Comments
             </th>
           </tr>
@@ -149,15 +149,15 @@ const ShowTransaction = () => {
             !loading && transactions.map((entry, index) => {
               return (
                 <tr key={index}>
-                  <td>{entry.transactionId}</td>
-                  <td>{entry.name}</td>
-                  <td>{entry.transactionDate}</td>
-                  <td><EditAmount transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2">{entry.transactionId}</td>
+                  <td class="border px-4 py-2">{entry.name}</td>
+                  <td class="border px-4 py-2">{entry.transactionDate}</td>
+                  <td class="border px-4 py-2"><EditAmount transaction={entry} refreshTransactions={refreshTransactions} /></td>
                   <Transaction accountId={entry.accountId} amount={entry.amount} transactionType={entry.transactionType}></Transaction>
-                  <td>{parseFloat(entry.rolloverBalance1).toFixed(2)}</td>
-                  <td>{parseFloat(entry.rolloverBalance2).toFixed(2)}</td>
-                  <td>{parseFloat(entry.rolloverBalance1 + entry.rolloverBalance2).toFixed(2)}</td>
-                  <td>{entry.comments}</td>
+                  <td class="border px-4 py-2">{parseFloat(entry.rolloverBalance1).toFixed(2)}</td>
+                  <td class="border px-4 py-2">{parseFloat(entry.rolloverBalance2).toFixed(2)}</td>
+                  <td class="border px-4 py-2">{parseFloat(entry.rolloverBalance1 + entry.rolloverBalance2).toFixed(2)}</td>
+                  <td class="border px-4 py-2">{entry.comments}</td>
                 </tr>
               )
             })

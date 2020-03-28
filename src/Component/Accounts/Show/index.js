@@ -166,7 +166,7 @@ const ShowAccount = () => {
 
     return (
         <div>
-            <table>
+            <table border-collapse border-2 border-gray-500>
                 <thead>
                     <tr>
                         <th>
