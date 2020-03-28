@@ -96,35 +96,53 @@ class AddTransaction extends Component {
                 <div>
                     <div>{this.state.msg}</div>
                     <div>
-                        <label htmlFor="selectAccount">Select Account</label>
-                        <select name="selectAccount" onChange={this.setAccount}>
-                            {
-                                this.state.accounts && this.state.accounts.map((account) => {
-                                    return <option key={account.accountId} value={account.accountId}>{account.name}</option>
-                                })
-                            }
-                        </select>
 
-                        <label htmlFor="txtName">Name of Transaction</label>
-                        <input type='text' name='txtName' onChange={this.setName} value={this.state.name} />
+                        <div>
 
+                            <label htmlFor="selectAccount">Select Account</label>
+                            <select name="selectAccount" onChange={this.setAccount}>
+                                {
+                                    this.state.accounts && this.state.accounts.map((account) => {
+                                        return <option key={account.accountId} value={account.accountId}>{account.name}</option>
+                                    })
+                                }
+                            </select>
 
-                        <label htmlFor="txtAmount">Amount</label>
-                        <input type='text' name='txtAmount' onChange={this.setAmount} value={this.state.amount} />
+                        </div>
 
-                        <label htmlFor="txtDate">Date</label>
-                        <input type='text' name='txtDate' onChange={this.setDate} value={this.state.transactionDate} />
+                        <div>
+                            <label htmlFor="txtName">Name of Transaction</label>
+                            <input type='text' name='txtName' onChange={this.setName} value={this.state.name} />
+                        </div>
 
-                        <label htmlFor="transactionType">Type of transaction</label>
-                        <select name="transactionType" onChange={this.setType}>
-                            <option value="None">Select Type</option>
-                            <option value="Debit">Debit</option>
-                            <option value="Credit">Credit</option>
-                        </select>
+                        <div>
 
-                        <label htmlFor="txtComments">Comments</label>
-                        <input type='text' name='txtComments' onChange={this.setComments} value={this.state.comments} />
-                        <input type='submit' />
+                            <label htmlFor="txtAmount">Amount</label>
+                            <input type='text' name='txtAmount' onChange={this.setAmount} value={this.state.amount} />
+                        </div>
+
+                        <div>
+                            <label htmlFor="txtDate">Date</label>
+                            <input type='text' name='txtDate' onChange={this.setDate} value={this.state.transactionDate} />
+                        </div>
+
+                        <div>
+                            <label htmlFor="transactionType">Type of transaction</label>
+                            <select name="transactionType" onChange={this.setType}>
+                                <option value="None">Select Type</option>
+                                <option value="Debit">Debit</option>
+                                <option value="Credit">Credit</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label htmlFor="txtComments">Comments</label>
+                            <input type='text' name='txtComments' onChange={this.setComments} value={this.state.comments} />
+                        </div>
+
+                        <div>
+                            <input type='submit' />
+                        </div>
                     </div>
                 </div>
             </form >

@@ -104,7 +104,7 @@ const ShowTransaction = () => {
         })
     }
     fetchTransactions()
-  }, {})
+  }, [])
 
 
   return (

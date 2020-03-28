@@ -4,6 +4,7 @@ import Rollover from './Component/Dashboard/Rollover'
 import ShowTransaction from './Component/Transaction/Show'
 import ShowAccount from './Component/Accounts/Show'
 import AddTransaction from './Component/Transaction/Add';
+import AddAccount from './Component/Accounts/Add';
 
 function App() {
 
@@ -60,6 +61,18 @@ function App() {
           />
           Show Account
         </label>
+        <label>
+          <input
+            type="radio"
+            name="selection"
+            value="4"
+            checked={currentSelection === "4"}
+            onChange={(event) => {
+              setSelection(event.target.value)
+            }}
+          />
+          Add Account
+        </label>
       </div>
       {
         currentSelection === "0" && (
@@ -86,6 +99,13 @@ function App() {
         currentSelection === "3" && (
           <div>
             <ShowAccount />
+          </div>
+        )
+      }
+      {
+        currentSelection === "4" && (
+          <div>
+            <AddAccount />
           </div>
         )
       }
