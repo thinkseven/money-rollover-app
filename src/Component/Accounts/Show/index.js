@@ -4,29 +4,30 @@ import moment from 'moment';
 const Edit = (props) => {
 
     const [isEditable, setEditable] = useState(false);
-    const [account, setAccount] = useState(props.account)
+    const [fieldValue, setFieldValue] = useState(props.account[props.field]);
 
     const updateAccount = (event) => {
+
         setEditable(false)
 
         const modifiedAccount = {
             [event.target.name]: event.target.value
         }
 
-        setAccount({ ...account, ...modifiedAccount })
+        const updateAccount = { ...props.account, ...modifiedAccount }
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
         var raw = {
-            name: account.name,
-            initialBalance: account.initialBalance,
-            currentBalance: account.currentBalance,
-            accountType: account.accountType,
-            paymentDueDay: account.paymentDueDay,
-            statementClosingDay: account.statementClosingDay,
-            installmentAmount: account.installmentAmount,
-            comments: account.comments
+            name: updateAccount.name,
+            initialBalance: updateAccount.initialBalance,
+            currentBalance: updateAccount.currentBalance,
+            accountType: updateAccount.accountType,
+            paymentDueDay: updateAccount.paymentDueDay,
+            statementClosingDay: updateAccount.statementClosingDay,
+            installmentAmount: updateAccount.installmentAmount,
+            comments: updateAccount.comments
         }
 
         var requestOptions = {
@@ -49,17 +50,14 @@ const Edit = (props) => {
         {
             !isEditable && (<span onClick={() => {
                 setEditable(true)
-            }}>{account[props.field]}</span>)
+            }}>{fieldValue}</span>)
         }
         {
             isEditable && (<input type='text' name={props.field} onChange={(event) => {
-                const modifiedAccount = {
-                    [event.target.name]: event.target.value
-                }
-                setAccount({ ...account, ...modifiedAccount })
+                setFieldValue(event.target.value)
             }} onBlur={(event) => {
                 updateAccount(event)
-            }} value={account[props.field]} />)
+            }} value={fieldValue} />)
         }
     </div>
 }
@@ -67,7 +65,7 @@ const Edit = (props) => {
 const EditType = (props) => {
 
     const [isEditable, setEditable] = useState(false);
-    const [account, setAccount] = useState(props.account)
+    const [fieldValue, setFieldValue] = useState(props.account[props.field])
 
     const updateAccount = (event) => {
         setEditable(false)
@@ -76,20 +74,20 @@ const EditType = (props) => {
             [event.target.name]: event.target.value
         }
 
-        setAccount({ ...account, ...modifiedAccount })
+        const updateAccount = { ...props.account, ...modifiedAccount }
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
         var raw = {
-            name: account.name,
-            initialBalance: account.initialBalance,
-            currentBalance: account.currentBalance,
-            accountType: account.accountType,
-            paymentDueDay: account.paymentDueDay,
-            statementClosingDay: account.statementClosingDay,
-            installmentAmount: account.installmentAmount,
-            comments: account.comments
+            name: updateAccount.name,
+            initialBalance: updateAccount.initialBalance,
+            currentBalance: updateAccount.currentBalance,
+            accountType: updateAccount.accountType,
+            paymentDueDay: updateAccount.paymentDueDay,
+            statementClosingDay: updateAccount.statementClosingDay,
+            installmentAmount: updateAccount.installmentAmount,
+            comments: updateAccount.comments
         }
 
         var requestOptions = {
@@ -113,15 +111,12 @@ const EditType = (props) => {
         {
             !isEditable && (<span onClick={() => {
                 setEditable(true)
-            }}>{account[props.field]}</span>)
+            }}>{fieldValue}</span>)
         }
         {
             isEditable && (
-                <select name={props.field} value={account[props.field]} onChange={(event) => {
-                    const modifiedAccount = {
-                        [event.target.name]: event.target.value
-                    }
-                    setAccount({ ...account, ...modifiedAccount })
+                <select name={props.field} value={fieldValue} onChange={(event) => {
+                    setFieldValue(event.target.value)
                 }} onBlur={(event) => {
                     updateAccount(event)
                 }}>
@@ -166,41 +161,35 @@ const ShowAccount = () => {
 
     return (
         <div>
-            <table border-collapse border-2 border-gray-500>
+            <table class="table-auto border-collapse border-2 border-gray-500">
                 <thead>
                     <tr>
-                        <th>
+                        <th class="border px-4 py-2">
                             Account Id
                         </th>
-                        <th>
+                        <th class="border px-4 py-2">
                             Name
                         </th>
-                        <th>
+                        <th class="border px-4 py-2">
                             Initial Balance
                         </th>
-                        <th>
+                        <th class="border px-4 py-2">
                             Current Balance
                         </th>
-                        <th>
+                        <th class="border px-4 py-2">
                             Account Type
                         </th>
-                        <th>
+                        <th class="border px-4 py-2">
                             Payment Due Day
                         </th>
-                        <th>
+                        <th class="border px-4 py-2">
                             Statement Closing Day
                         </th>
-                        <th>
+                        <th class="border px-4 py-2">
                             Installment Amount
                         </th>
-                        <th>
+                        <th class="border px-4 py-2">
                             Comments
-                        </th>
-                        <th>
-                            Created Date
-                        </th>
-                        <th>
-                            Modified Date
                         </th>
                     </tr>
                 </thead>
@@ -209,17 +198,15 @@ const ShowAccount = () => {
                         !loading && accounts.map((account) => {
                             return (
                                 <tr key={account.accountId}>
-                                    <td>{account.accountId}</td>
-                                    <td><Edit field="name" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td><Edit field="initialBalance" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td><Edit field="currentBalance" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td><EditType field="accountType" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td><Edit field="paymentDueDay" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td><Edit field="statementClosingDay" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td><Edit field="installmentAmount" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td><Edit field="comments" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td>{moment(account.createdDate).format('MMM DD')}</td>
-                                    <td>{moment(account.modifiedDate).format('MMM DD')}</td>
+                                    <td class="border px-4 py-2">{account.accountId}</td>
+                                    <td class="border px-4 py-2"><Edit field="name" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td class="border px-4 py-2"><Edit field="initialBalance" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td class="border px-4 py-2"><Edit field="currentBalance" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td class="border px-4 py-2"><EditType field="accountType" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td class="border px-4 py-2"><Edit field="paymentDueDay" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td class="border px-4 py-2"><Edit field="statementClosingDay" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td class="border px-4 py-2"><Edit field="installmentAmount" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td class="border px-4 py-2"><Edit field="comments" account={account} refreshAccounts={refreshAccounts} /></td>
                                 </tr>
                             )
                         })

@@ -385,28 +385,28 @@ const ShowTransaction = () => {
 
   return (
     <div>
-      <table>
+      <table class="table-auto border-collapse border-2 border-gray-500">
         <thead>
           <tr>
-            <th>
+            <th class="border px-4 py-2">
               Transaction Id
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Name
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Transaction Date
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Amount
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Account
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Type
             </th>
-            <th>
+            <th class="border px-4 py-2">
               Comments
             </th>
           </tr>
@@ -416,13 +416,13 @@ const ShowTransaction = () => {
             !loading && transactions.map((entry, index) => {
               return (
                 <tr key={index}>
-                  <td>{entry.transactionId}</td>
-                  <td><EditName transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditDate transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditAmount transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditAccount transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
-                  <td><EditType transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditComments transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2">{entry.transactionId}</td>
+                  <td class="border px-4 py-2"><EditName transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2"><EditDate transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2"><EditAmount transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2"><EditAccount transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
+                  <td class="border px-4 py-2"><EditType transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2"><EditComments transaction={entry} refreshTransactions={refreshTransactions} /></td>
                 </tr>
               )
             })

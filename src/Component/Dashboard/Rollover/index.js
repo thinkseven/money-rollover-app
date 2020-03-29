@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment'
 import getTransactions from './Transactions'
 
 const EditAmount = (props) => {
@@ -151,7 +152,7 @@ const ShowTransaction = () => {
                 <tr key={index}>
                   <td class="border px-4 py-2">{entry.transactionId}</td>
                   <td class="border px-4 py-2">{entry.name}</td>
-                  <td class="border px-4 py-2">{entry.transactionDate}</td>
+                  <td class="border px-4 py-2">{moment(entry.transactionDate).format('MMM DD')}</td>
                   <td class="border px-4 py-2"><EditAmount transaction={entry} refreshTransactions={refreshTransactions} /></td>
                   <Transaction accountId={entry.accountId} amount={entry.amount} transactionType={entry.transactionType}></Transaction>
                   <td class="border px-4 py-2">{parseFloat(entry.rolloverBalance1).toFixed(2)}</td>
