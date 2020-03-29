@@ -1,79 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
-const EditAmount = (props) => {
+const Edit = (props) => {
 
   const [isEditable, setEditable] = useState(false);
-  const [amount, setAmount] = useState(props.transaction.amount)
+  const [fieldValue, setFieldValue] = useState(props.transaction[props.field])
 
   const updateTransaction = (event) => {
+
     setEditable(false)
-    setAmount(event.target.value)
+
+    const modifiedTransaction = {
+      [event.target.name]: event.target.value
+    }
+
+    const updateTransaction = { ...props.transaction, ...modifiedTransaction }
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = {
-      accountId: props.transaction.accountId,
-      name: props.transaction.name,
-      transactionDate: new Date(props.transaction.transactionDate),
-      amount: amount,
-      transactionType: props.transaction.transactionType,
-      comments: props.transaction.comments
-    }
-
-    var requestOptions = {
-      method: 'PUT',
-      headers: myHeaders,
-      body: JSON.stringify(raw),
-      redirect: 'follow'
-    };
-
-    fetch(`/Transaction/${props.transaction.transactionId}`, requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        props.refreshTransactions()
-        console.log(result)
-      })
-      .catch(error => console.log('error', error));
-  }
-
-
-  return <div>
-    {
-      !isEditable && (<span onClick={() => {
-        setEditable(true)
-      }}>{amount}</span>)
-    }
-    {
-      isEditable && (<input type='text' name='txtAmount' onChange={(event) => {
-        setAmount(event.target.value)
-      }} onBlur={(event) => {
-        updateTransaction(event)
-      }} value={amount} />)
-    }
-  </div>
-}
-
-const EditName = (props) => {
-
-  const [isEditable, setEditable] = useState(false);
-  const [name, setName] = useState(props.transaction.name)
-
-  const updateTransaction = (event) => {
-    setEditable(false)
-    setName(event.target.value)
-
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    var raw = {
-      accountId: props.transaction.accountId,
-      name: name,
-      transactionDate: new Date(props.transaction.transactionDate),
-      amount: props.transaction.amount,
-      transactionType: props.transaction.transactionType,
-      comments: props.transaction.comments
+      accountId: updateTransaction.accountId,
+      name: updateTransaction.name,
+      transactionDate: new Date(updateTransaction.transactionDate),
+      amount: updateTransaction.amount,
+      transactionType: updateTransaction.transactionType,
+      comments: updateTransaction.comments
     }
 
     var requestOptions = {
@@ -96,14 +48,14 @@ const EditName = (props) => {
     {
       !isEditable && (<span onClick={() => {
         setEditable(true)
-      }}>{name}</span>)
+      }}>{fieldValue}</span>)
     }
     {
-      isEditable && (<input type='text' name='txtName' onChange={(event) => {
-        setName(event.target.value)
+      isEditable && (<input type='text' name={props.field} onChange={(event) => {
+        setFieldValue(event.target.value)
       }} onBlur={(event) => {
         updateTransaction(event)
-      }} value={name} />)
+      }} value={fieldValue} />)
     }
   </div>
 }
@@ -145,12 +97,21 @@ const EditDate = (props) => {
       .catch(error => console.log('error', error));
   }
 
+  const highlightDisplay = (value) => {
+    if (moment(value).isAfter(moment())) {
+      return {
+        color: "green",
+        fontSize: "20px"
+      }
+      return {}
+    }
+  }
 
   return <div>
     {
       !isEditable && (<span onClick={() => {
         setEditable(true)
-      }}>{moment(transactionDate).format('MMM DD')}</span>)
+      }} style={highlightDisplay(transactionDate)}>{moment(transactionDate).format('MMM DD')}</span>)
     }
     {
       isEditable && (<input type='text' name='txtDate' onChange={(event) => {
@@ -291,60 +252,6 @@ const EditType = (props) => {
   </div >
 }
 
-const EditComments = (props) => {
-
-  const [isEditable, setEditable] = useState(false);
-  const [comments, setComents] = useState(props.transaction.comments)
-
-  const updateTransaction = (event) => {
-    setEditable(false)
-    setComents(event.target.value)
-
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    var raw = {
-      accountId: props.transaction.accountId,
-      name: props.transaction.name,
-      transactionDate: new Date(props.transaction.transactionDate),
-      amount: props.transaction.amount,
-      transactionType: props.transaction.transactionType,
-      comments: comments
-    }
-
-    var requestOptions = {
-      method: 'PUT',
-      headers: myHeaders,
-      body: JSON.stringify(raw),
-      redirect: 'follow'
-    };
-
-    fetch(`/Transaction/${props.transaction.transactionId}`, requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        props.refreshTransactions()
-        console.log(result)
-      })
-      .catch(error => console.log('error', error));
-  }
-
-
-  return <div>
-    {
-      !isEditable && (<span onClick={() => {
-        setEditable(true)
-      }}>{comments}</span>)
-    }
-    {
-      isEditable && (<input type='text' name='txtComments' onChange={(event) => {
-        setComents(event.target.value)
-      }} onBlur={(event) => {
-        updateTransaction(event)
-      }} value={comments} />)
-    }
-  </div>
-}
-
 const ShowTransaction = () => {
 
   const [transactions, setTransactions] = useState([])
@@ -352,6 +259,8 @@ const ShowTransaction = () => {
   const [loading, setLoading] = useState(true)
 
   const refreshTransactions = () => {
+    setLoading(true)
+    setTransactions([])
     fetch("/Transaction")
       .then(res => res.json())
       .then((data) => {
@@ -417,12 +326,12 @@ const ShowTransaction = () => {
               return (
                 <tr key={index}>
                   <td class="border px-4 py-2">{entry.transactionId}</td>
-                  <td class="border px-4 py-2"><EditName transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td class="border px-4 py-2"><EditDate transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td class="border px-4 py-2"><EditAmount transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td class="border px-4 py-2"><EditAccount transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
-                  <td class="border px-4 py-2"><EditType transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td class="border px-4 py-2"><EditComments transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2"><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2"><EditDate field="transactionDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2"><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2"><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
+                  <td class="border px-4 py-2"><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2"><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
                 </tr>
               )
             })

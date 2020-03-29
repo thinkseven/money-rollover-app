@@ -7,8 +7,8 @@ class AddAccount extends Component {
         initialBalance: 0,
         currentBalance: 0,
         accountType: 'None',
-        paymentDueDay: 1,
-        statementClosingDay: 1,
+        paymentDueDay: null,
+        statementClosingDay: null,
         installmentAmount: 0,
         comments: null,
         msg: null
@@ -31,8 +31,8 @@ class AddAccount extends Component {
             initialBalance: this.state.initialBalance,
             currentBalance: this.state.currentBalance,
             accountType: this.state.accountType,
-            paymentDueDay: this.state.paymentDueDay,
-            statementClosingDay: this.state.statementClosingDay,
+            paymentDueDay: new Date(this.state.paymentDueDay),
+            statementClosingDay: new Date(this.state.statementClosingDay),
             installmentAmount: this.state.installmentAmount,
             comments: this.state.comments
         }

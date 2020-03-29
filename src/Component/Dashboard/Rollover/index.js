@@ -114,13 +114,10 @@ const ShowTransaction = () => {
         <thead>
           <tr>
             <th class="border px-4 py-2">
-              Transaction Id
+              Transaction Date
             </th>
             <th class="border px-4 py-2"> 
               Name
-            </th>
-            <th class="border px-4 py-2">
-              Transaction Date
             </th>
             <th class="border px-4 py-2">
               Amount
@@ -140,9 +137,6 @@ const ShowTransaction = () => {
             <th class="border px-4 py-2">
               Total
             </th>
-            <th class="border px-4 py-2">
-              Comments
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -150,15 +144,13 @@ const ShowTransaction = () => {
             !loading && transactions.map((entry, index) => {
               return (
                 <tr key={index}>
-                  <td class="border px-4 py-2">{entry.transactionId}</td>
-                  <td class="border px-4 py-2">{entry.name}</td>
                   <td class="border px-4 py-2">{moment(entry.transactionDate).format('MMM DD')}</td>
+                  <td class="border px-4 py-2">{entry.name}</td>
                   <td class="border px-4 py-2"><EditAmount transaction={entry} refreshTransactions={refreshTransactions} /></td>
                   <Transaction accountId={entry.accountId} amount={entry.amount} transactionType={entry.transactionType}></Transaction>
                   <td class="border px-4 py-2">{parseFloat(entry.rolloverBalance1).toFixed(2)}</td>
                   <td class="border px-4 py-2">{parseFloat(entry.rolloverBalance2).toFixed(2)}</td>
                   <td class="border px-4 py-2">{parseFloat(entry.rolloverBalance1 + entry.rolloverBalance2).toFixed(2)}</td>
-                  <td class="border px-4 py-2">{entry.comments}</td>
                 </tr>
               )
             })

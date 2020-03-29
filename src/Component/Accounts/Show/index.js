@@ -24,8 +24,8 @@ const Edit = (props) => {
             initialBalance: updateAccount.initialBalance,
             currentBalance: updateAccount.currentBalance,
             accountType: updateAccount.accountType,
-            paymentDueDay: updateAccount.paymentDueDay,
-            statementClosingDay: updateAccount.statementClosingDay,
+            paymentDueDay: new Date(updateAccount.paymentDueDay),
+            statementClosingDay: new Date(updateAccount.statementClosingDay),
             installmentAmount: updateAccount.installmentAmount,
             comments: updateAccount.comments
         }
@@ -46,11 +46,39 @@ const Edit = (props) => {
             .catch(error => console.log('error', error));
     }
 
+    const highlightDisplay = (name, value, accountType) => {
+        if (accountType === "Credit Card" || accountType === "Loan") {
+            if (name === "paymentDueDay" || name === "statementClosingDay") {
+                if (moment(value).add(30, "days").isAfter(moment())) {
+                    return {
+                        color: "green",
+                        fontSize: "18px"
+                    }
+                }
+            }
+        }
+        return {}
+    }
+
+    const formatDisplay = (name, value, accountType) => {
+        let fieldValue = value;
+        switch (name) {
+            case "paymentDueDay":
+            case "statementClosingDay":
+                fieldValue = (accountType === "Credit Card" || accountType === "Loan") ? moment(value).add(30, "days").format("MMM DD") : moment(value).format("MMM DD");
+                break;
+            default:
+                fieldValue = value;
+        }
+        return fieldValue
+    }
+
     return <div>
         {
             !isEditable && (<span onClick={() => {
                 setEditable(true)
-            }}>{fieldValue}</span>)
+            }} style={highlightDisplay(props.field, fieldValue, props.account["accountType"])
+            }>{formatDisplay(props.field, fieldValue, props.account["accountType"])}</span>)
         }
         {
             isEditable && (<input type='text' name={props.field} onChange={(event) => {
@@ -84,8 +112,8 @@ const EditType = (props) => {
             initialBalance: updateAccount.initialBalance,
             currentBalance: updateAccount.currentBalance,
             accountType: updateAccount.accountType,
-            paymentDueDay: updateAccount.paymentDueDay,
-            statementClosingDay: updateAccount.statementClosingDay,
+            paymentDueDay: new Date(updateAccount.paymentDueDay),
+            statementClosingDay: new Date(updateAccount.statementClosingDay),
             installmentAmount: updateAccount.installmentAmount,
             comments: updateAccount.comments
         }
@@ -139,6 +167,8 @@ const ShowAccount = () => {
     const [loading, setLoading] = useState(true)
 
     const refreshAccounts = () => {
+        setLoading(true)
+        setAccounts([])
         fetch("/Account")
             .then(res => res.json())
             .then((data) => {
@@ -165,9 +195,6 @@ const ShowAccount = () => {
                 <thead>
                     <tr>
                         <th class="border px-4 py-2">
-                            Account Id
-                        </th>
-                        <th class="border px-4 py-2">
                             Name
                         </th>
                         <th class="border px-4 py-2">
@@ -180,10 +207,10 @@ const ShowAccount = () => {
                             Account Type
                         </th>
                         <th class="border px-4 py-2">
-                            Payment Due Day
+                            Next Payment Due Date
                         </th>
                         <th class="border px-4 py-2">
-                            Statement Closing Day
+                            Next Closing Due Date
                         </th>
                         <th class="border px-4 py-2">
                             Installment Amount
@@ -198,7 +225,6 @@ const ShowAccount = () => {
                         !loading && accounts.map((account) => {
                             return (
                                 <tr key={account.accountId}>
-                                    <td class="border px-4 py-2">{account.accountId}</td>
                                     <td class="border px-4 py-2"><Edit field="name" account={account} refreshAccounts={refreshAccounts} /></td>
                                     <td class="border px-4 py-2"><Edit field="initialBalance" account={account} refreshAccounts={refreshAccounts} /></td>
                                     <td class="border px-4 py-2"><Edit field="currentBalance" account={account} refreshAccounts={refreshAccounts} /></td>
