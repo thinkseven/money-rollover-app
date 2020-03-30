@@ -2,111 +2,73 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment'
 import getTransactions from './Transactions'
 
-const EditAmount = (props) => {
-
-  const [isEditable, setEditable] = useState(false);
-  const [amount, setAmount] = useState(props.transaction.amount)
-
-  const updateTransaction = (event) => {
-    setEditable(false)
-    setAmount(event.target.value)
-
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    var raw = {
-      accountId: props.transaction.accountId,
-      name: props.transaction.name,
-      transactionDate: new Date(props.transaction.transactionDate),
-      amount: amount,
-      transactionType: props.transaction.transactionType,
-      comments: props.transaction.comments
-    }
-
-    var requestOptions = {
-      method: 'PUT',
-      headers: myHeaders,
-      body: JSON.stringify(raw),
-      redirect: 'follow'
-    };
-
-    fetch(`/Transaction/${props.transaction.transactionId}`, requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        props.refreshTransactions()
-        console.log(result)
-      })
-      .catch(error => console.log('error', error));
-  }
-
-
-  return <div>
-    {
-      !isEditable && (<span onClick={() => {
-        setEditable(true)
-      }}>{amount}</span>)
-    }
-    {
-      isEditable && (<input type='text' name='txtName' onChange={(event) => {
-        setAmount(event.target.value)
-      }} onBlur={(event) => {
-        updateTransaction(event)
-      }} value={amount} />)
-    }
-  </div>
+const getTransactionForThisAccount = (accountId, transactions) => {
+  let arrTransaction = transactions.filter((transaction) => {
+    return transaction.accountId === accountId
+  })
+  if (arrTransaction && arrTransaction.length > 0)
+    return arrTransaction[0]
+  else
+    return undefined
 }
 
-const Transaction = (props) => {
-  if (props.accountId === 1) {
-    return (
-      <React.Fragment>
-        <td class="border px-4 py-2">{props.amount}</td>
-        <td class="border px-4 py-2"></td>
-      </React.Fragment>
-    )
-  }
-  if (props.accountId === 9) {
-    return (
-      <React.Fragment>
-        <td class="border px-4 py-2"></td>
-        <td class="border px-4 py-2">{props.amount}</td>
-      </React.Fragment>
-    )
-  }
+const Transactions = (props) => {
   return (
     <React.Fragment>
-      <td class="border px-4 py-2"></td>
-      <td class="border px-4 py-2"></td>
+      <td class="border px-4 py-2">
+        {
+          props.transactions.reduce((acc, transaction) => { return acc + transaction.amount }, 0)
+        }
+      </td>
+      {
+        props.accounts.filter((account) => {
+          return account.accountType !== "401K"
+        }).map((account) => {
+          let transactionFound = getTransactionForThisAccount(account.accountId, props.transactions)
+          if (transactionFound) {
+            return (<td class="border px-4 py-2">{transactionFound.rolloverBalance}</td>)
+          }
+          else {
+            return (<td class="border px-4 py-2"></td>)
+          }
+        })
+      }
     </React.Fragment>
   )
 }
 
+const DisplayAccounts = (props) => {
+  return props.accounts.map((account) => {
+    return account.accountType !== "401K" && (
+      <th class="border px-4 py-2" key={account.accountId}>
+        {account.name}
+      </th>
+    )
+  })
+}
+
 const ShowTransaction = () => {
 
-  const [transactions, setTransactions] = useState([])
   const [loading, setLoading] = useState(true)
-
-  const refreshTransactions = () => {
-    fetch("/Transaction")
-      .then(res => res.json())
-      .then((data) => {
-        setTransactions(getTransactions(data))
-        setLoading(false)
-      })
-  }
+  const [accounts, setAccounts] = useState([])
+  const [transactions, setTransactions] = useState([])
 
   useEffect(() => {
     const fetchTransactions = () => {
-      fetch("/Transaction")
+      fetch("/Account")
         .then(res => res.json())
-        .then((data) => {
-          setTransactions(getTransactions(data))
-          setLoading(false)
+        .then((accounts) => {
+          fetch("/Transaction")
+            .then(res => res.json())
+            .then((transactions) => {
+              setAccounts(accounts)
+              setTransactions(getTransactions(accounts, transactions))
+              setLoading(false)
+            })
         })
     }
     fetchTransactions()
   }, [])
-
 
   return (
     <div>
@@ -116,19 +78,14 @@ const ShowTransaction = () => {
             <th class="border px-4 py-2">
               Transaction Date
             </th>
-            <th class="border px-4 py-2"> 
+            <th class="border px-4 py-2">
               Name
             </th>
             <th class="border px-4 py-2">
               Amount
             </th>
-            <th class="border px-4 py-2">
-              Bank of America
-            </th>
-            <th class="border px-4 py-2">
-              Chase
-            </th>
-            <th class="border px-4 py-2">
+            <DisplayAccounts accounts={accounts} />
+            {/* <th class="border px-4 py-2">
               Rollover Balance
             </th>
             <th class="border px-4 py-2">
@@ -136,28 +93,28 @@ const ShowTransaction = () => {
             </th>
             <th class="border px-4 py-2">
               Total
-            </th>
+            </th> */}
           </tr>
         </thead>
         <tbody>
           {
-            !loading && transactions.map((entry, index) => {
-              return (
-                <tr key={index}>
-                  <td class="border px-4 py-2">{moment(entry.transactionDate).format('MMM DD')}</td>
-                  <td class="border px-4 py-2">{entry.name}</td>
-                  <td class="border px-4 py-2"><EditAmount transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <Transaction accountId={entry.accountId} amount={entry.amount} transactionType={entry.transactionType}></Transaction>
-                  <td class="border px-4 py-2">{parseFloat(entry.rolloverBalance1).toFixed(2)}</td>
-                  <td class="border px-4 py-2">{parseFloat(entry.rolloverBalance2).toFixed(2)}</td>
-                  <td class="border px-4 py-2">{parseFloat(entry.rolloverBalance1 + entry.rolloverBalance2).toFixed(2)}</td>
-                </tr>
-              )
+            !loading && Object.entries(transactions).map(([transactionDate, value, index]) => {
+              return value.map((transactionGroup) => {
+                return Object.entries(transactionGroup).map(([transactionName, value, index]) => {
+                  return (
+                    <tr>
+                      <td class="border px-4 py-2">{moment(transactionDate).format("MMM DD")}</td>
+                      <td class="border px-4 py-2">{transactionName}</td>
+                      <Transactions transactions={value} accounts={accounts}></Transactions>
+                    </tr>
+                  )
+                })
+              })
             })
           }
         </tbody>
       </table>
-    </div>
+    </div >
   )
 }
 

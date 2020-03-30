@@ -103,8 +103,8 @@ const EditDate = (props) => {
         color: "green",
         fontSize: "20px"
       }
-      return {}
     }
+    return {}
   }
 
   return <div>
@@ -252,6 +252,37 @@ const EditType = (props) => {
   </div >
 }
 
+const DeleteTransaction = (props) => {
+
+  const handlerClick = () => {
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = "";
+
+    var requestOptions = {
+      method: 'DELETE',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch(`/Transaction/${props.transactionId}`, requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        props.refreshTransactions()
+        console.log(result)
+      })
+      .catch(error => console.log('error', error));
+
+  }
+
+  return <div>
+    <button onClick={handlerClick}>Delete </button>
+  </div>
+}
+
 const ShowTransaction = () => {
 
   const [transactions, setTransactions] = useState([])
@@ -332,6 +363,7 @@ const ShowTransaction = () => {
                   <td class="border px-4 py-2"><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
                   <td class="border px-4 py-2"><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
                   <td class="border px-4 py-2"><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2"><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
                 </tr>
               )
             })
