@@ -22,7 +22,8 @@ const Edit = (props) => {
     var raw = {
       accountId: updateTransaction.accountId,
       name: updateTransaction.name,
-      transactionDate: new Date(updateTransaction.transactionDate),
+      dueDate: new Date(updateTransaction.dueDate),
+      postDate: new Date(updateTransaction.postDate),
       amount: updateTransaction.amount,
       transactionType: updateTransaction.transactionType,
       comments: updateTransaction.comments
@@ -63,22 +64,28 @@ const Edit = (props) => {
 const EditDate = (props) => {
 
   const [isEditable, setEditable] = useState(false);
-  const [transactionDate, setDate] = useState(props.transaction.transactionDate)
+  const [someDate, setDate] = useState(props.transaction[props.field])
 
   const updateTransaction = (event) => {
     setEditable(false)
-    setDate(event.target.value)
+
+    const modifiedTransaction = {
+      [event.target.name]: event.target.value
+    }
+
+    const updateTransaction = { ...props.transaction, ...modifiedTransaction }
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = {
-      accountId: props.transaction.accountId,
-      name: props.transaction.name,
-      transactionDate: new Date(transactionDate),
-      amount: props.transaction.amount,
-      transactionType: props.transaction.transactionType,
-      comments: props.transaction.comments
+      accountId: updateTransaction.accountId,
+      name: updateTransaction.name,
+      dueDate: new Date(updateTransaction.dueDate),
+      postDate: new Date(updateTransaction.postDate),
+      amount: updateTransaction.amount,
+      transactionType: updateTransaction.transactionType,
+      comments: updateTransaction.comments
     }
 
     var requestOptions = {
@@ -97,28 +104,18 @@ const EditDate = (props) => {
       .catch(error => console.log('error', error));
   }
 
-  const highlightDisplay = (value) => {
-    if (moment(value).isAfter(moment())) {
-      return {
-        color: "green",
-        fontSize: "20px"
-      }
-    }
-    return {}
-  }
-
   return <div>
     {
       !isEditable && (<span onClick={() => {
         setEditable(true)
-      }} style={highlightDisplay(transactionDate)}>{moment(transactionDate).format('MMM DD')}</span>)
+      }}>{moment(someDate).format('MMM DD')}</span>)
     }
     {
-      isEditable && (<input type='text' name='txtDate' onChange={(event) => {
+      isEditable && (<input type='text' name={props.field} onChange={(event) => {
         setDate(event.target.value)
       }} onBlur={(event) => {
         updateTransaction(event)
-      }} value={transactionDate} />)
+      }} value={someDate} />)
     }
   </div>
 }
@@ -126,22 +123,28 @@ const EditDate = (props) => {
 const EditAccount = (props) => {
 
   const [isEditable, setEditable] = useState(false);
-  const [accountId, setAccount] = useState(props.transaction.accountId)
+  const [accountId, setAccount] = useState(props.transaction[props.field])
 
   const updateTransaction = (event) => {
     setEditable(false)
-    setAccount(event.target.value)
+
+    const modifiedTransaction = {
+      [event.target.name]: event.target.value
+    }
+
+    const updateTransaction = { ...props.transaction, ...modifiedTransaction }
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = {
-      accountId: accountId,
-      name: props.transaction.name,
-      transactionDate: new Date(props.transaction.transactionDate),
-      amount: props.transaction.amount,
-      transactionType: props.transaction.transactionType,
-      comments: props.transaction.comments
+      accountId: updateTransaction.accountId,
+      name: updateTransaction.name,
+      dueDate: new Date(updateTransaction.dueDate),
+      postDate: new Date(updateTransaction.postDate),
+      amount: updateTransaction.amount,
+      transactionType: updateTransaction.transactionType,
+      comments: updateTransaction.comments
     }
 
     var requestOptions = {
@@ -196,22 +199,28 @@ const EditAccount = (props) => {
 const EditType = (props) => {
 
   const [isEditable, setEditable] = useState(false);
-  const [transactionType, setType] = useState(props.transaction.transactionType ? 'Debit' : 'Credit')
+  const [transactionType, setType] = useState(props.transaction[props.field] ? 'Debit' : 'Credit')
 
   const updateTransaction = (event) => {
     setEditable(false)
-    setType(event.target.value)
+
+    const modifiedTransaction = {
+      [event.target.name]: event.target.value === "Debit" ? true : false,
+    }
+
+    const updateTransaction = { ...props.transaction, ...modifiedTransaction }
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = {
-      accountId: props.transaction.accountId,
-      name: props.transaction.name,
-      transactionDate: new Date(props.transaction.transactionDate),
-      amount: props.transaction.amount,
-      transactionType: transactionType === "Debit" ? true : false,
-      comments: props.transaction.comments
+      accountId: updateTransaction.accountId,
+      name: updateTransaction.name,
+      dueDate: new Date(updateTransaction.dueDate),
+      postDate: new Date(updateTransaction.postDate),
+      amount: updateTransaction.amount,
+      transactionType: updateTransaction.transactionType,
+      comments: updateTransaction.comments
     }
 
     var requestOptions = {
@@ -230,7 +239,6 @@ const EditType = (props) => {
       .catch(error => console.log('error', error));
   }
 
-
   return <div>
     {
       !isEditable && (<span onClick={() => {
@@ -239,7 +247,7 @@ const EditType = (props) => {
     }
     {
       isEditable && (
-        <select name="transactionType" value={transactionType} onChange={(event) => {
+        <select name={props.field} value={transactionType} onChange={(event) => {
           setType(event.target.value)
         }} onBlur={(event) => {
           updateTransaction(event)
@@ -289,6 +297,17 @@ const ShowTransaction = () => {
   const [accounts, setAccounts] = useState([])
   const [loading, setLoading] = useState(true)
 
+  const setBackground = (transaction) => {
+    if (moment(transaction.postDate).isBefore(moment()) && moment(transaction.dueDate).isBefore(moment())) {
+      return "bg-gray-100" // paid and verified
+    } else if (moment(transaction.postDate).isBefore(moment(transaction.dueDate))) {
+      return "bg-gray-300" // paid but not verified
+    } else if (moment(transaction.dueDate).isAfter(moment()) && moment(transaction.dueDate).isSame(moment(),'month')) {
+      return "bg-gray-500" // not yet paid this month transactions
+    }
+    return "bg-gray-700"
+  }
+
   const refreshTransactions = () => {
     setLoading(true)
     setTransactions([])
@@ -329,13 +348,13 @@ const ShowTransaction = () => {
         <thead>
           <tr>
             <th class="border px-4 py-2">
-              Transaction Id
-            </th>
-            <th class="border px-4 py-2">
               Name
             </th>
             <th class="border px-4 py-2">
-              Transaction Date
+              Due Date
+            </th>
+            <th class="border px-4 py-2">
+              Post Date
             </th>
             <th class="border px-4 py-2">
               Amount
@@ -355,10 +374,10 @@ const ShowTransaction = () => {
           {
             !loading && transactions.map((entry, index) => {
               return (
-                <tr key={index}>
-                  <td class="border px-4 py-2">{entry.transactionId}</td>
+                <tr key={index} className={setBackground(entry)}>
                   <td class="border px-4 py-2"><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td class="border px-4 py-2"><EditDate field="transactionDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2"><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td class="border px-4 py-2"><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
                   <td class="border px-4 py-2"><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
                   <td class="border px-4 py-2"><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
                   <td class="border px-4 py-2"><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>

@@ -13,6 +13,18 @@ const getTransactionForThisAccount = (accountId, transactions) => {
 }
 
 const Transactions = (props) => {
+
+  const setBackground = (transaction) => {
+    if (moment(transaction.postDate).isBefore(moment()) && moment(transaction.dueDate).isBefore(moment())) {
+      return "border px-4 py-2" // transaction completed and verified
+    } else if (moment(transaction.postDate).isSame(moment(transaction.dueDate)) && moment(transaction.dueDate).isAfter(moment())) {
+      return "border px-4 py-2 bg-gray-300" // todays transaction
+    } else if (moment(transaction.postDate).isAfter(moment()) && moment(transaction.postDate).isSame(moment(), 'month')) {
+      return "border px-4 py-2 bg-gray-500" // not yet posted
+    }
+    return "border px-4 py-2"
+  }
+
   return (
     <React.Fragment>
       <td class="border px-4 py-2">
@@ -26,7 +38,7 @@ const Transactions = (props) => {
         }).map((account) => {
           let transactionFound = getTransactionForThisAccount(account.accountId, props.transactions)
           if (transactionFound) {
-            return (<td class="border px-4 py-2">{transactionFound.rolloverBalance}</td>)
+            return (<td className={setBackground(transactionFound)}><div><div class="text-center font-black">{transactionFound.rolloverBalance}</div><div class="italic text-center text-xs">{transactionFound.amount}</div></div></td>)
           }
           else {
             return (<td class="border px-4 py-2"></td>)
@@ -85,25 +97,16 @@ const ShowTransaction = () => {
               Amount
             </th>
             <DisplayAccounts accounts={accounts} />
-            {/* <th class="border px-4 py-2">
-              Rollover Balance
-            </th>
-            <th class="border px-4 py-2">
-              Rollover Balance
-            </th>
-            <th class="border px-4 py-2">
-              Total
-            </th> */}
           </tr>
         </thead>
         <tbody>
           {
-            !loading && Object.entries(transactions).map(([transactionDate, value, index]) => {
+            !loading && Object.entries(transactions).map(([dueDate, value, index]) => {
               return value.map((transactionGroup) => {
                 return Object.entries(transactionGroup).map(([transactionName, value, index]) => {
                   return (
                     <tr>
-                      <td class="border px-4 py-2">{moment(transactionDate).format("MMM DD")}</td>
+                      <td class="border px-4 py-2">{moment(dueDate).format("MMM DD")}</td>
                       <td class="border px-4 py-2">{transactionName}</td>
                       <Transactions transactions={value} accounts={accounts}></Transactions>
                     </tr>

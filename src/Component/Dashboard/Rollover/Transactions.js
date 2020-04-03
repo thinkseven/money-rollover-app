@@ -3,7 +3,7 @@ import moment from 'moment';
 const sanitize = (transactions) => {
     return transactions.map((transaction) => {
         const modifiedTransaction = {
-            transactionDate: moment(transaction.transactionDate).format("MM/DD/YYYY")
+            dueDate: moment(transaction.dueDate).format("MM/DD/YYYY")
         }
         return { ...transaction, ...modifiedTransaction }
     })
@@ -78,7 +78,7 @@ const getTransactions = (accounts, transactions) => {
 }
 
 const groupTransactionsByProperties = (accounts, transactions) => {
-    let firstGrouping = groupByAnyProperty(sanitize(getTransactions(accounts, transactions)), "transactionDate");
+    let firstGrouping = groupByAnyProperty(sanitize(getTransactions(accounts, transactions)), "dueDate");
     let secondGrouping = subGroupByAnyProperty(firstGrouping, "name");
     return secondGrouping;
 }
