@@ -106,9 +106,9 @@ const EditDate = (props) => {
 
   return <div>
     {
-      !isEditable && (<span onClick={() => {
+      !isEditable && (<span style={{ whiteSpace: 'pre' }} onClick={() => {
         setEditable(true)
-      }}>{moment(someDate).format('MMM DD')}</span>)
+      }}>{moment(someDate).format('ddd[\r\n]MMM D')}</span>)
     }
     {
       isEditable && (<input type='text' name={props.field} onChange={(event) => {
@@ -302,7 +302,7 @@ const ShowTransaction = () => {
       return "bg-gray-100" // paid and verified
     } else if (moment(transaction.postDate).isBefore(moment(transaction.dueDate))) {
       return "bg-gray-300" // paid but not verified
-    } else if (moment(transaction.dueDate).isAfter(moment()) && moment(transaction.dueDate).isSame(moment(),'month')) {
+    } else if (moment(transaction.dueDate).isAfter(moment()) && moment(transaction.dueDate).isSame(moment(), 'month')) {
       return "bg-gray-500" // not yet paid this month transactions
     }
     return "bg-gray-700"

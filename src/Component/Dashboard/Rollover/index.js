@@ -16,13 +16,13 @@ const Transactions = (props) => {
 
   const setBackground = (transaction) => {
     if (moment(transaction.postDate).isBefore(moment()) && moment(transaction.dueDate).isBefore(moment())) {
-      return "border px-4 py-2" // transaction completed and verified
-    } else if (moment(transaction.postDate).isSame(moment(transaction.dueDate)) && moment(transaction.dueDate).isAfter(moment())) {
-      return "border px-4 py-2 bg-gray-300" // todays transaction
-    } else if (moment(transaction.postDate).isAfter(moment()) && moment(transaction.postDate).isSame(moment(), 'month')) {
-      return "border px-4 py-2 bg-gray-500" // not yet posted
+      return "bg-gray-100" // paid and verified
+    } else if (moment(transaction.postDate).isBefore(moment(transaction.dueDate))) {
+      return "bg-gray-300" // paid but not verified
+    } else if (moment(transaction.dueDate).isAfter(moment()) && moment(transaction.dueDate).isSame(moment(), 'month')) {
+      return "bg-gray-500" // not yet paid this month transactions
     }
-    return "border px-4 py-2"
+    return "bg-gray-700"
   }
 
   return (
@@ -106,7 +106,7 @@ const ShowTransaction = () => {
                 return Object.entries(transactionGroup).map(([transactionName, value, index]) => {
                   return (
                     <tr>
-                      <td class="border px-4 py-2">{moment(dueDate).format("MMM DD")}</td>
+                      <td class="border px-4 py-2"><span style={{ whiteSpace: 'pre' }}>{moment(dueDate).format("ddd[\r\n]MMM D")}</span></td>
                       <td class="border px-4 py-2">{transactionName}</td>
                       <Transactions transactions={value} accounts={accounts}></Transactions>
                     </tr>

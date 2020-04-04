@@ -52,12 +52,15 @@ const Edit = (props) => {
                 if (moment(value).add(30, "days").isAfter(moment())) {
                     return {
                         color: "green",
-                        fontSize: "18px"
+                        fontSize: "18px",
+                        whiteSpace: "pre"
                     }
                 }
             }
         }
-        return {}
+        return {
+            whiteSpace: "pre"
+        }
     }
 
     const formatDisplay = (name, value, accountType) => {
@@ -65,7 +68,7 @@ const Edit = (props) => {
         switch (name) {
             case "paymentDueDay":
             case "statementClosingDay":
-                fieldValue = (accountType === "Credit Card" || accountType === "Loan") ? moment(value).add(30, "days").format("MMM DD") : moment(value).format("MMM DD");
+                fieldValue = (accountType === "Credit Card" || accountType === "Loan") ? moment(value).add(30, "days").format("ddd[\r\n]MMM D") : moment(value).format("ddd[\r\n]MMM D");
                 break;
             default:
                 fieldValue = value;
