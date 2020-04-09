@@ -105,29 +105,29 @@ class AddTransaction extends Component {
 
     render() {
         return (
-            <div class="w-full max-w-sm">
-                <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={this.addTransaction}>
+            <div>
+                <form onSubmit={this.addTransaction}>
                     {
                         this.state.msg && (
-                            <div class="md:flex md:items-center py-4">
-                                <p class="text-red-500 text-xs italic">{this.state.msg}</p>
+                            <div>
+                                <p>{this.state.msg}</p>
                             </div>
                         )
                     }
 
-                    <div class="md:flex md:items-center">
-                        <div class="md:w-1/3"></div>
-                        <div class="md:w-2/3">
-                            <div class="font-bold text-xl mb-2">Add Transaction</div>
+                    <div>
+                        <div></div>
+                        <div>
+                            <div>Add Transaction</div>
                         </div>
                     </div>
 
-                    <div class="md:flex md:items-center mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="selectAccount">Select Account</label>
+                    <div>
+                        <div>
+                            <label htmlFor="selectAccount">Select Account</label>
                         </div>
-                        <div class="md:w-2/3">
-                            <select class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="selectAccount" onChange={this.setAccount}>
+                        <div>
+                            <select name="selectAccount" onChange={this.setAccount}>
                                 {
                                     this.state.accounts && this.state.accounts.map((account) => {
                                         return <option key={account.accountId} value={account.accountId}>{account.name}</option>
@@ -137,48 +137,48 @@ class AddTransaction extends Component {
                         </div>
                     </div>
 
-                    <div class="md:flex md:items-center mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="txtName">Name of Transaction</label>
+                    <div>
+                        <div>
+                            <label htmlFor="txtName">Name of Transaction</label>
                         </div>
-                        <div class="md:w-2/3">
-                            <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" type='text' name='txtName' onChange={this.setName} value={this.state.name} />
-                        </div>
-                    </div>
-
-                    <div class="md:flex md:items-center mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="txtAmount">Amount</label>
-                        </div>
-                        <div class="md:w-2/3">
-                            <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" type='text' name='txtAmount' onChange={this.setAmount} value={this.state.amount} />
+                        <div>
+                            <input type='text' name='txtName' onChange={this.setName} value={this.state.name} />
                         </div>
                     </div>
 
-                    <div class="md:flex md:items-center mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="txtDate">Due Date</label>
+                    <div>
+                        <div>
+                            <label htmlFor="txtAmount">Amount</label>
                         </div>
-                        <div class="md:w-2/3">
-                            <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" type='text' name='dueDate' onChange={this.setDate} value={this.state.dueDate} />
-                        </div>
-                    </div>
-
-                    <div class="md:flex md:items-center mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="txtDate">Post Date</label>
-                        </div>
-                        <div class="md:w-2/3">
-                            <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" type='text' name='postDate' onChange={this.setDate} value={this.state.postDate} />
+                        <div>
+                            <input type='text' name='txtAmount' onChange={this.setAmount} value={this.state.amount} />
                         </div>
                     </div>
 
-                    <div class="md:flex md:items-center mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="transactionType">Type of transaction</label>
+                    <div>
+                        <div>
+                            <label htmlFor="txtDate">Due Date</label>
                         </div>
-                        <div class="md:w-2/3">
-                            <select class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="transactionType" onChange={this.setType}>
+                        <div>
+                            <input type='text' name='dueDate' onChange={this.setDate} value={this.state.dueDate} />
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label htmlFor="txtDate">Post Date</label>
+                        </div>
+                        <div>
+                            <input type='text' name='postDate' onChange={this.setDate} value={this.state.postDate} />
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label htmlFor="transactionType">Type of transaction</label>
+                        </div>
+                        <div>
+                            <select name="transactionType" onChange={this.setType}>
                                 <option value="None">Select Type</option>
                                 <option value="Debit">Debit</option>
                                 <option value="Credit">Credit</option>
@@ -186,19 +186,19 @@ class AddTransaction extends Component {
                         </div>
                     </div>
 
-                    <div class="md:flex md:items-center mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="txtComments">Comments</label>
+                    <div>
+                        <div>
+                            <label htmlFor="txtComments">Comments</label>
                         </div>
-                        <div class="md:w-2/3">
-                            <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" type='text' name='txtComments' onChange={this.setComments} value={this.state.comments} />
+                        <div>
+                            <input type='text' name='txtComments' onChange={this.setComments} value={this.state.comments} />
                         </div>
                     </div>
 
-                    <div class="md:flex md:items-center">
-                        <div class="md:w-1/3"></div>
-                        <div class="md:w-2/3">
-                            <input class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type='submit' />
+                    <div>
+                        <div></div>
+                        <div>
+                            <input type='submit' />
                         </div>
                     </div>
                 </form >

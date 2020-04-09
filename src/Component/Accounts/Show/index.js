@@ -194,31 +194,31 @@ const ShowAccount = () => {
 
     return (
         <div>
-            <table class="table-auto border-collapse border-2 border-gray-500">
+            <table>
                 <thead>
                     <tr>
-                        <th class="border px-4 py-2">
+                        <th>
                             Name
                         </th>
-                        <th class="border px-4 py-2">
+                        <th>
                             Initial Balance
                         </th>
-                        <th class="border px-4 py-2">
+                        <th>
                             Current Balance
                         </th>
-                        <th class="border px-4 py-2">
+                        <th>
                             Account Type
                         </th>
-                        <th class="border px-4 py-2">
+                        <th>
                             Next Payment Due Date
                         </th>
-                        <th class="border px-4 py-2">
+                        <th>
                             Next Closing Due Date
                         </th>
-                        <th class="border px-4 py-2">
+                        <th>
                             Installment Amount
                         </th>
-                        <th class="border px-4 py-2">
+                        <th>
                             Comments
                         </th>
                     </tr>
@@ -228,14 +228,14 @@ const ShowAccount = () => {
                         !loading && accounts.map((account) => {
                             return (
                                 <tr key={account.accountId}>
-                                    <td class="border px-4 py-2"><Edit field="name" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td class="border px-4 py-2"><Edit field="initialBalance" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td class="border px-4 py-2"><Edit field="currentBalance" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td class="border px-4 py-2"><EditType field="accountType" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td class="border px-4 py-2"><Edit field="paymentDueDay" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td class="border px-4 py-2"><Edit field="statementClosingDay" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td class="border px-4 py-2"><Edit field="installmentAmount" account={account} refreshAccounts={refreshAccounts} /></td>
-                                    <td class="border px-4 py-2"><Edit field="comments" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td><Edit field="name" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td><Edit field="initialBalance" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td><Edit field="currentBalance" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td><EditType field="accountType" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td><Edit field="paymentDueDay" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td><Edit field="statementClosingDay" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td><Edit field="installmentAmount" account={account} refreshAccounts={refreshAccounts} /></td>
+                                    <td><Edit field="comments" account={account} refreshAccounts={refreshAccounts} /></td>
                                 </tr>
                             )
                         })

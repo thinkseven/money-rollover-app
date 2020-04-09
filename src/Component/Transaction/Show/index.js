@@ -299,13 +299,21 @@ const ShowTransaction = () => {
 
   const setBackground = (transaction) => {
     if (moment(transaction.postDate).isBefore(moment()) && moment(transaction.dueDate).isBefore(moment())) {
-      return "bg-gray-100" // paid and verified
+      return {
+        backgroundColor: 'green'
+      } // paid and verified
     } else if (moment(transaction.postDate).isBefore(moment(transaction.dueDate))) {
-      return "bg-gray-300" // paid but not verified
+      return {
+        backgroundColor: 'yellow'
+      } // paid but not verified
     } else if (moment(transaction.dueDate).isAfter(moment()) && moment(transaction.dueDate).isSame(moment(), 'month')) {
-      return "bg-gray-500" // not yet paid this month transactions
+      return {
+        backgroundColor: 'red'
+      } // not yet paid this month transactions
     }
-    return "bg-gray-700"
+    return {
+      backgroundColor: 'gray'
+    }
   }
 
   const refreshTransactions = () => {
@@ -344,28 +352,28 @@ const ShowTransaction = () => {
 
   return (
     <div>
-      <table class="table-auto border-collapse border-2 border-gray-500">
+      <table>
         <thead>
           <tr>
-            <th class="border px-4 py-2">
+            <th>
               Name
             </th>
-            <th class="border px-4 py-2">
+            <th>
               Due Date
             </th>
-            <th class="border px-4 py-2">
+            <th>
               Post Date
             </th>
-            <th class="border px-4 py-2">
+            <th>
               Amount
             </th>
-            <th class="border px-4 py-2">
+            <th>
               Account
             </th>
-            <th class="border px-4 py-2">
+            <th>
               Type
             </th>
-            <th class="border px-4 py-2">
+            <th>
               Comments
             </th>
           </tr>
@@ -374,15 +382,15 @@ const ShowTransaction = () => {
           {
             !loading && transactions.map((entry, index) => {
               return (
-                <tr key={index} className={setBackground(entry)}>
-                  <td class="border px-4 py-2"><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td class="border px-4 py-2"><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td class="border px-4 py-2"><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td class="border px-4 py-2"><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td class="border px-4 py-2"><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
-                  <td class="border px-4 py-2"><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td class="border px-4 py-2"><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td class="border px-4 py-2"><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
+                <tr key={index} style={setBackground(entry)}>
+                  <td><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
+                  <td><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
                 </tr>
               )
             })

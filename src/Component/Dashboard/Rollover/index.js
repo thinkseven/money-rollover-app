@@ -16,18 +16,26 @@ const Transactions = (props) => {
 
   const setBackground = (transaction) => {
     if (moment(transaction.postDate).isBefore(moment()) && moment(transaction.dueDate).isBefore(moment())) {
-      return "bg-gray-100" // paid and verified
+      return {
+        backgroundColor: 'green'
+      } // paid and verified
     } else if (moment(transaction.postDate).isBefore(moment(transaction.dueDate))) {
-      return "bg-gray-300" // paid but not verified
+      return {
+        backgroundColor: 'yellow'
+      } // paid but not verified
     } else if (moment(transaction.dueDate).isAfter(moment()) && moment(transaction.dueDate).isSame(moment(), 'month')) {
-      return "bg-gray-500" // not yet paid this month transactions
+      return {
+        backgroundColor: 'red'
+      } // not yet paid this month transactions
     }
-    return "bg-gray-700"
+    return {
+      backgroundColor: 'gray'
+    }
   }
 
   return (
     <React.Fragment>
-      <td class="border px-4 py-2">
+      <td>
         {
           props.transactions.reduce((acc, transaction) => { return acc + transaction.amount }, 0)
         }
@@ -38,10 +46,10 @@ const Transactions = (props) => {
         }).map((account) => {
           let transactionFound = getTransactionForThisAccount(account.accountId, props.transactions)
           if (transactionFound) {
-            return (<td className={setBackground(transactionFound)}><div><div class="text-center font-black">{transactionFound.rolloverBalance}</div><div class="italic text-center text-xs">{transactionFound.amount}</div></div></td>)
+            return (<td style={setBackground(transactionFound)}><div><div>{transactionFound.rolloverBalance}</div><div>{transactionFound.amount}</div></div></td>)
           }
           else {
-            return (<td class="border px-4 py-2"></td>)
+            return (<td></td>)
           }
         })
       }
@@ -52,7 +60,7 @@ const Transactions = (props) => {
 const DisplayAccounts = (props) => {
   return props.accounts.map((account) => {
     return account.accountType !== "401K" && (
-      <th class="border px-4 py-2" key={account.accountId}>
+      <th key={account.accountId}>
         {account.name}
       </th>
     )
@@ -84,16 +92,16 @@ const ShowTransaction = () => {
 
   return (
     <div>
-      <table class="table-auto border-collapse border-2 border-gray-500">
+      <table>
         <thead>
           <tr>
-            <th class="border px-4 py-2">
+            <th>
               Transaction Date
             </th>
-            <th class="border px-4 py-2">
+            <th>
               Name
             </th>
-            <th class="border px-4 py-2">
+            <th>
               Amount
             </th>
             <DisplayAccounts accounts={accounts} />
@@ -106,8 +114,8 @@ const ShowTransaction = () => {
                 return Object.entries(transactionGroup).map(([transactionName, value, index]) => {
                   return (
                     <tr>
-                      <td class="border px-4 py-2"><span style={{ whiteSpace: 'pre' }}>{moment(dueDate).format("ddd[\r\n]MMM D")}</span></td>
-                      <td class="border px-4 py-2">{transactionName}</td>
+                      <td><span style={{ whiteSpace: 'pre' }}>{moment(dueDate).format("ddd[\r\n]MMM D")}</span></td>
+                      <td>{transactionName}</td>
                       <Transactions transactions={value} accounts={accounts}></Transactions>
                     </tr>
                   )
