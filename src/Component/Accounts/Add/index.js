@@ -77,56 +77,54 @@ class AddAccount extends Component {
 
     render() {
         return (
-            <div>
+            <div class="col-9 container">
                 <form onSubmit={this.addTransaction}>
-
                     {
                         this.state.msg && (
-                            <div>
-                                <p>{this.state.msg}</p>
+                            <div class="row">
+                                <div class="col-12"><span>{this.state.msg}</span></div>
                             </div>
                         )
                     }
 
-                    <div>
-                        <div></div>
-                        <div>
+                    <div class="row">
+                        <div class="col-12">
                             <div>Add Account</div>
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div class="col-3">
                             <label htmlFor="name">Name</label>
                         </div>
-                        <div>
+                        <div class="col-9">
                             <input type='text' name='name' onChange={this.setValue} value={this.state.name} />
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div  class="col-3">
                             <label htmlFor="initialBalance">Initial Balance</label>
                         </div>
-                        <div>
+                        <div  class="col-9">
                             <input type='text' name='initialBalance' onChange={this.setValue} value={this.state.initialBalance} />
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div  class="col-3">
                             <label htmlFor="currentBalance">Current Balance</label>
                         </div>
-                        <div>
+                        <div  class="col-9">
                             <input type='text' name='currentBalance' onChange={this.setValue} value={this.state.currentBalance} />
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div  class="col-3">
                             <label htmlFor="accountType">Type of Account</label>
                         </div>
-                        <div>
+                        <div  class="col-9">
                             <select name="accountType" value={this.state.accountType} onChange={this.setValue}>
                                 <option value="None">Select Type</option>
                                 <option value="Checking">Checking</option>
@@ -139,45 +137,45 @@ class AddAccount extends Component {
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div  class="col-3">
                             <label htmlFor="paymentDueDay">Payment Due Day</label>
                         </div>
-                        <div>
+                        <div  class="col-9">
                             <input type='text' name='paymentDueDay' onChange={this.setValue} value={this.state.paymentDueDay} />
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div  class="col-3">
                             <label htmlFor="statementClosingDay">Statement Closing Day</label>
                         </div>
-                        <div>
+                        <div  class="col-9">
                             <input type='text' name='statementClosingDay' onChange={this.setValue} value={this.state.statementClosingDay} />
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div  class="col-3">
                             <label htmlFor="installmentAmount">Installment Amount</label>
                         </div>
-                        <div>
+                        <div  class="col-9">
                             <input type='text' name='installmentAmount' onChange={this.setValue} value={this.state.installmentAmount} />
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div  class="col-3">
                             <label htmlFor="comments">Comments</label>
                         </div>
-                        <div>
+                        <div  class="col-9">
                             <input type='text' name='comments' onChange={this.setValue} value={this.state.comments} />
                         </div>
                     </div>
 
-                    <div>
-                        <div></div>
-                        <div>
+                    <div class="row">
+                        <div class="col-3"></div>
+                        <div  class="col-9">
                             <input type='submit' />
                         </div>
                     </div>

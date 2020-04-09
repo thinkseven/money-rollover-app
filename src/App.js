@@ -10,31 +10,30 @@ import ShowTransaction from './Component/Transaction/Show'
 import ShowAccount from './Component/Accounts/Show'
 import AddTransaction from './Component/Transaction/Add';
 import AddAccount from './Component/Accounts/Add';
+import './App.css';
 
 function App() {
 
   return (
-    <div>
+    <div class="row">
       <Router>
-        <div>
+        <div class="col-12">
           <nav>
-            <div>
-              <Link to="/Dashboard">
-                Dashboard
+            <Link to="/Dashboard">
+              Dashboard
               </Link>
-              <Link to="/Transactions">
-                Transactions
+            <Link to="/Transactions">
+              Transactions
               </Link>
-              <Link to="/Accounts">
-                Accounts
+            <Link to="/Accounts">
+              Accounts
               </Link>
-              <Link to="/AddAccount">
-                Add Account
+            <Link to="/AddAccount">
+              Add Account
               </Link>
-              <Link to="/AddTransaction">
-                Add Transaction
+            <Link to="/AddTransaction">
+              Add Transaction
               </Link>
-            </div>
           </nav>
         </div>
         <Switch>

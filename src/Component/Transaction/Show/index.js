@@ -351,7 +351,7 @@ const ShowTransaction = () => {
   }, [])
 
   return (
-    <div>
+    <div class="col-12">
       <table>
         <thead>
           <tr>

@@ -105,28 +105,27 @@ class AddTransaction extends Component {
 
     render() {
         return (
-            <div>
+            <div class="col-9 container">
                 <form onSubmit={this.addTransaction}>
                     {
                         this.state.msg && (
-                            <div>
-                                <p>{this.state.msg}</p>
+                            <div class="row">
+                                <div class="col-12"><span>{this.state.msg}</span></div>
                             </div>
                         )
                     }
 
-                    <div>
-                        <div></div>
-                        <div>
+                    <div class="row">
+                        <div class="col-12">
                             <div>Add Transaction</div>
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div class="col-3">
                             <label htmlFor="selectAccount">Select Account</label>
                         </div>
-                        <div>
+                        <div class="col-9">
                             <select name="selectAccount" onChange={this.setAccount}>
                                 {
                                     this.state.accounts && this.state.accounts.map((account) => {
@@ -137,47 +136,47 @@ class AddTransaction extends Component {
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div class="col-3">
                             <label htmlFor="txtName">Name of Transaction</label>
                         </div>
-                        <div>
+                        <div class="col-9">
                             <input type='text' name='txtName' onChange={this.setName} value={this.state.name} />
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div class="col-3">
                             <label htmlFor="txtAmount">Amount</label>
                         </div>
-                        <div>
+                        <div class="col-9">
                             <input type='text' name='txtAmount' onChange={this.setAmount} value={this.state.amount} />
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div class="col-3">
                             <label htmlFor="txtDate">Due Date</label>
                         </div>
-                        <div>
+                        <div class="col-9">
                             <input type='text' name='dueDate' onChange={this.setDate} value={this.state.dueDate} />
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div class="col-3">
                             <label htmlFor="txtDate">Post Date</label>
                         </div>
-                        <div>
+                        <div class="col-9">
                             <input type='text' name='postDate' onChange={this.setDate} value={this.state.postDate} />
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div class="col-3">
                             <label htmlFor="transactionType">Type of transaction</label>
                         </div>
-                        <div>
+                        <div class="col-9">
                             <select name="transactionType" onChange={this.setType}>
                                 <option value="None">Select Type</option>
                                 <option value="Debit">Debit</option>
@@ -186,18 +185,18 @@ class AddTransaction extends Component {
                         </div>
                     </div>
 
-                    <div>
-                        <div>
+                    <div class="row">
+                        <div class="col-3">
                             <label htmlFor="txtComments">Comments</label>
                         </div>
-                        <div>
+                        <div class="col-9">
                             <input type='text' name='txtComments' onChange={this.setComments} value={this.state.comments} />
                         </div>
                     </div>
 
-                    <div>
-                        <div></div>
-                        <div>
+                    <div class="row">
+                        <div class="col-3"></div>
+                        <div class="col-9">
                             <input type='submit' />
                         </div>
                     </div>
