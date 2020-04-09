@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import './index.css';
 import moment from 'moment';
 
 const Edit = (props) => {
