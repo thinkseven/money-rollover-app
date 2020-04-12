@@ -15,9 +15,9 @@ import './App.css';
 function App() {
 
   return (
-    <div class="row">
+    <div className="row">
       <Router>
-        <div class="col-12">
+        <div className="col-12">
           <nav>
             <Link to="/Dashboard">
               Dashboard

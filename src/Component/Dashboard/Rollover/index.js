@@ -36,18 +36,17 @@ const Transactions = (props) => {
 
   return (
     <React.Fragment>
-      <td>
-        {
-          props.transactions.reduce((acc, transaction) => { return acc + transaction.amount }, 0)
-        }
-      </td>
+      <td>{props.transactions.amount}</td>
       {
         props.accounts.filter((account) => {
           return account.accountType !== "401K"
         }).map((account) => {
-          let transactionFound = getTransactionForThisAccount(account.accountId, props.transactions)
-          if (transactionFound) {
-            return (<td style={setBackground(transactionFound)}><div><div>{transactionFound.rolloverBalance}</div><div>{transactionFound.amount}</div></div></td>)
+          let accountFound = getTransactionForThisAccount(account.accountId, props.transactions.accountBalance)
+          if (accountFound && accountFound.amount) {
+            return (<td style={setBackground(accountFound)}><div><div>{accountFound.currentBalance}</div><div style={{ fontSize: '12px', fontStyle: 'italic' }}>{accountFound.amount}</div></div></td>)
+          }
+          else if (accountFound && accountFound.amount === null) {
+            return (<td><div>{accountFound.currentBalance}</div></td>)
           }
           else {
             return (<td></td>)
@@ -62,7 +61,8 @@ const DisplayAccounts = (props) => {
   return props.accounts.map((account) => {
     return account.accountType !== "401K" && (
       <th key={account.accountId}>
-        {account.name}
+        <div>{account.name}</div>
+        <div style={{ fontSize: '12px', fontStyle: 'italic' }}>{account.currentBalance}</div>
       </th>
     )
   })
@@ -92,7 +92,7 @@ const ShowTransaction = () => {
   }, [])
 
   return (
-    <div class="col-12">
+    <div className="col-12">
       <table>
         <thead>
           <tr>
@@ -112,12 +112,12 @@ const ShowTransaction = () => {
           {
             !loading && Object.entries(transactions).map(([dueDate, value, index]) => {
               return value.map((transactionGroup) => {
-                return Object.entries(transactionGroup).map(([transactionName, value, index]) => {
+                return Object.entries(transactionGroup).map(([transactionName, groupedAccountBalance, index]) => {
                   return (
                     <tr>
                       <td><span style={{ whiteSpace: 'pre' }}>{moment(dueDate).format("ddd[\r\n]MMM D")}</span></td>
                       <td>{transactionName}</td>
-                      <Transactions transactions={value} accounts={accounts}></Transactions>
+                      <Transactions transactions={groupedAccountBalance} accounts={accounts}></Transactions>
                     </tr>
                   )
                 })
