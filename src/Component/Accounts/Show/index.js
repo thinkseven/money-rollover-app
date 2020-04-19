@@ -38,7 +38,7 @@ const Edit = (props) => {
             redirect: 'follow'
         };
 
-        fetch(`/Account/${props.account.accountId}`, requestOptions)
+        fetch(`/api/v1/money/Account/${props.account.accountId}`, requestOptions)
             .then(response => response.text())
             .then(result => {
                 props.refreshAccounts()
@@ -129,7 +129,7 @@ const EditType = (props) => {
             redirect: 'follow'
         };
 
-        fetch(`/Account/${props.account.accountId}`, requestOptions)
+        fetch(`/api/v1/money/Account/${props.account.accountId}`, requestOptions)
             .then(response => response.text())
             .then(result => {
                 props.refreshAccounts()
@@ -173,7 +173,7 @@ const ShowAccount = () => {
     const refreshAccounts = () => {
         setLoading(true)
         setAccounts([])
-        fetch("/Account")
+        fetch("/api/v1/money/Account")
             .then(res => res.json())
             .then((data) => {
                 setAccounts(data)
@@ -183,7 +183,7 @@ const ShowAccount = () => {
 
     useEffect(() => {
         const fetchAccounts = () => {
-            fetch("/Account")
+            fetch("/api/v1/money/Account")
                 .then(res => res.json())
                 .then((data) => {
                     setAccounts(data)

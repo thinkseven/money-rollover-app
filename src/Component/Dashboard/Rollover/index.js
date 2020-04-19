@@ -76,10 +76,10 @@ const ShowTransaction = () => {
 
   useEffect(() => {
     const fetchTransactions = () => {
-      fetch("/Account")
+      fetch("/api/v1/money/Account")
         .then(res => res.json())
         .then((accounts) => {
-          fetch("/Transaction")
+          fetch("/api/v1/money/Transaction")
             .then(res => res.json())
             .then((transactions) => {
               setAccounts(accounts)

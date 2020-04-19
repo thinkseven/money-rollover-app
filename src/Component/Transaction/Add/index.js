@@ -72,7 +72,7 @@ class AddTransaction extends Component {
             redirect: 'follow'
         };
 
-        fetch("/Transaction", requestOptions)
+        fetch("/api/v1/money/Transaction", requestOptions)
             .then((response) => {
                 if (!response.ok) {
                     throw Error("Failed to create transaction due to error!!");
@@ -94,7 +94,7 @@ class AddTransaction extends Component {
     }
 
     componentDidMount = () => {
-        fetch("/Account")
+        fetch("/api/v1/money/Account")
             .then(res => res.json())
             .then((data) => {
                 this.setState({

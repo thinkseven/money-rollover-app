@@ -44,7 +44,7 @@ class AddAccount extends Component {
             redirect: 'follow'
         };
 
-        fetch("/Account", requestOptions)
+        fetch("/api/v1/money/Account", requestOptions)
             .then((response) => {
                 if (!response.ok) {
                     throw Error("Failed to create account due to error!!");
@@ -66,7 +66,7 @@ class AddAccount extends Component {
     }
 
     componentDidMount = () => {
-        fetch("/Account")
+        fetch("/api/v1/money/Account")
             .then(res => res.json())
             .then((data) => {
                 this.setState({

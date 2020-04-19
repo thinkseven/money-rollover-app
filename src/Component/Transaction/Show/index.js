@@ -37,7 +37,7 @@ const Edit = (props) => {
       redirect: 'follow'
     };
 
-    fetch(`/Transaction/${props.transaction.transactionId}`, requestOptions)
+    fetch(`/api/v1/money/Transaction/${props.transaction.transactionId}`, requestOptions)
       .then(response => response.text())
       .then(result => {
         props.refreshTransactions()
@@ -96,7 +96,7 @@ const EditDate = (props) => {
       redirect: 'follow'
     };
 
-    fetch(`/Transaction/${props.transaction.transactionId}`, requestOptions)
+    fetch(`/api/v1/money/Transaction/${props.transaction.transactionId}`, requestOptions)
       .then(response => response.text())
       .then(result => {
         props.refreshTransactions()
@@ -155,7 +155,7 @@ const EditAccount = (props) => {
       redirect: 'follow'
     };
 
-    fetch(`/Transaction/${props.transaction.transactionId}`, requestOptions)
+    fetch(`/api/v1/money/Transaction/${props.transaction.transactionId}`, requestOptions)
       .then(response => response.text())
       .then(result => {
         props.refreshTransactions()
@@ -231,7 +231,7 @@ const EditType = (props) => {
       redirect: 'follow'
     };
 
-    fetch(`/Transaction/${props.transaction.transactionId}`, requestOptions)
+    fetch(`/api/v1/money/Transaction/${props.transaction.transactionId}`, requestOptions)
       .then(response => response.text())
       .then(result => {
         props.refreshTransactions()
@@ -277,7 +277,7 @@ const DeleteTransaction = (props) => {
       redirect: 'follow'
     };
 
-    fetch(`/Transaction/${props.transactionId}`, requestOptions)
+    fetch(`/api/v1/money/Transaction/${props.transactionId}`, requestOptions)
       .then(response => response.text())
       .then(result => {
         props.refreshTransactions()
@@ -320,7 +320,7 @@ const ShowTransaction = () => {
   const refreshTransactions = () => {
     setLoading(true)
     setTransactions([])
-    fetch("/Transaction")
+    fetch("/api/v1/money/Transaction")
       .then(res => res.json())
       .then((data) => {
         setTransactions(data)
@@ -330,7 +330,7 @@ const ShowTransaction = () => {
 
   useEffect(() => {
     const fetchTransactions = () => {
-      fetch("/Transaction")
+      fetch("/api/v1/money/Transaction")
         .then(res => res.json())
         .then((data) => {
           setTransactions(data)
@@ -342,7 +342,7 @@ const ShowTransaction = () => {
 
   useEffect(() => {
     const fetchAccounts = () => {
-      fetch("/Account")
+      fetch("/api/v1/money/Account")
         .then(res => res.json())
         .then((data) => {
           setAccounts(data)
