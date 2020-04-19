@@ -11,6 +11,7 @@ import ShowAccount from './Component/Accounts/Show'
 import AddTransaction from './Component/Transaction/Add';
 import AddAccount from './Component/Accounts/Add';
 import './App.css';
+import './Component/Component.css'
 
 function App() {
 
