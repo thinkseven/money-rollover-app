@@ -211,10 +211,10 @@ const ShowAccount = () => {
                             Account Type
                         </th>
                         <th>
-                            Next Payment Due Date
+                            Next Payment
                         </th>
                         <th>
-                            Next Closing Due Date
+                            Next Closing
                         </th>
                         <th>
                             Installment Amount

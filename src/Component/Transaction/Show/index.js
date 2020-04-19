@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './index.css';
 import moment from 'moment';
 
@@ -288,7 +290,7 @@ const DeleteTransaction = (props) => {
   }
 
   return <div>
-    <button onClick={handlerClick}>Delete </button>
+    <button onClick={handlerClick}><FontAwesomeIcon icon={faTrash} /> </button>
   </div>
 }
 

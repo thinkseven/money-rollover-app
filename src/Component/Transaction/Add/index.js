@@ -6,7 +6,7 @@ class AddTransaction extends Component {
     accounts: [],
     accountId: 0,
     name: '',
-    amount: 0,
+    amount: '',
     dueDate: '',
     postDate: '',
     transactionType: '',
@@ -55,7 +55,7 @@ class AddTransaction extends Component {
           msg: "Transaction created successfully!!",
           accountId: 0,
           name: '',
-          amount: 0,
+          amount: '',
           dueDate: '',
           postDate: '',
           transactionType: '',
@@ -82,7 +82,7 @@ class AddTransaction extends Component {
 
   render() {
     return (
-      <div className="col-9 container">
+      <div className="col-6 container">
         <form onSubmit={this.addTransaction}>
           {
             this.state.msg && (
@@ -94,7 +94,7 @@ class AddTransaction extends Component {
 
           <div className="row">
             <div className="col-12">
-              <div>Add Transaction</div>
+              <div><h1>Add Transaction</h1></div>
             </div>
           </div>
 
@@ -118,7 +118,7 @@ class AddTransaction extends Component {
               <label htmlFor="name">Name of Transaction</label>
             </div>
             <div className="col-9">
-              <input type='text' name='name' onChange={this.setValue} value={this.state.name} />
+              <input type='text' name='name' onChange={this.setValue} value={this.state.name} placeholder="Enter transaction name"/>
             </div>
           </div>
 
@@ -127,7 +127,7 @@ class AddTransaction extends Component {
               <label htmlFor="amount">Amount</label>
             </div>
             <div className="col-9">
-              <input type='text' name='amount' onChange={this.setValue} value={this.state.amount} />
+              <input type='text' name='amount' onChange={this.setValue} value={this.state.amount} placeholder="Enter amount"/>
             </div>
           </div>
 
@@ -136,7 +136,7 @@ class AddTransaction extends Component {
               <label htmlFor="dueDate">Due Date</label>
             </div>
             <div className="col-9">
-              <input type='text' name='dueDate' onChange={this.setValue} value={this.state.dueDate} />
+              <input type='text' name='dueDate' onChange={this.setValue} value={this.state.dueDate} placeholder="MM/DD/YYYY" />
             </div>
           </div>
 
@@ -145,7 +145,7 @@ class AddTransaction extends Component {
               <label htmlFor="postDate">Post Date</label>
             </div>
             <div className="col-9">
-              <input type='text' name='postDate' onChange={this.setValue} value={this.state.postDate} />
+              <input type='text' name='postDate' onChange={this.setValue} value={this.state.postDate} placeholder="MM/DD/YYYY" />
             </div>
           </div>
 
@@ -167,7 +167,7 @@ class AddTransaction extends Component {
               <label htmlFor="comments">Comments</label>
             </div>
             <div className="col-9">
-              <input type='text' name='comments' onChange={this.setValue} value={this.state.comments} />
+              <input type='text' name='comments' onChange={this.setValue} value={this.state.comments} placeholder="Enter comments" />
             </div>
           </div>
 

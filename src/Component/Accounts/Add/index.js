@@ -4,12 +4,12 @@ class AddAccount extends Component {
 
   state = {
     name: '',
-    initialBalance: 0,
-    currentBalance: 0,
+    initialBalance: '',
+    currentBalance: '',
     accountType: 'None',
     paymentDueDay: '',
     statementClosingDay: '',
-    installmentAmount: 0,
+    installmentAmount: '',
     comments: '',
     msg: '',
   }
@@ -55,12 +55,12 @@ class AddAccount extends Component {
         this.setState({
           msg: "Account created successfully!!",
           name: '',
-          initialBalance: 0,
-          currentBalance: 0,
+          initialBalance: '',
+          currentBalance: '',
           accountType: 'None',
           paymentDueDay: '',
           statementClosingDay: '',
-          installmentAmount: 0,
+          installmentAmount: '',
           comments: ''
         })
       })
@@ -84,7 +84,7 @@ class AddAccount extends Component {
 
   render() {
     return (
-      <div className="col-9 container">
+      <div className="col-6 container">
         <form onSubmit={this.addTransaction}>
           {
             this.state.msg && (
@@ -96,7 +96,7 @@ class AddAccount extends Component {
 
           <div className="row">
             <div className="col-12">
-              <div>Add Account</div>
+              <div><h1>Add Account</h1></div>
             </div>
           </div>
 
@@ -105,7 +105,7 @@ class AddAccount extends Component {
               <label htmlFor="name">Name</label>
             </div>
             <div className="col-9">
-              <input type='text' name='name' onChange={this.setValue} value={this.state.name} />
+              <input type='text' name='name' onChange={this.setValue} value={this.state.name} placeholder="Enter account name"/>
             </div>
           </div>
 
@@ -114,7 +114,7 @@ class AddAccount extends Component {
               <label htmlFor="initialBalance">Initial Balance</label>
             </div>
             <div className="col-9">
-              <input type='text' name='initialBalance' onChange={this.setValue} value={this.state.initialBalance} />
+              <input type='text' name='initialBalance' onChange={this.setValue} value={this.state.initialBalance} placeholder="Enter initial balance"/>
             </div>
           </div>
 
@@ -123,7 +123,7 @@ class AddAccount extends Component {
               <label htmlFor="currentBalance">Current Balance</label>
             </div>
             <div className="col-9">
-              <input type='text' name='currentBalance' onChange={this.setValue} value={this.state.currentBalance} />
+              <input type='text' name='currentBalance' onChange={this.setValue} value={this.state.currentBalance} placeholder="Enter current balance"/>
             </div>
           </div>
 
@@ -149,7 +149,7 @@ class AddAccount extends Component {
               <label htmlFor="paymentDueDay">Payment Due Day</label>
             </div>
             <div className="col-9">
-              <input type='text' name='paymentDueDay' onChange={this.setValue} value={this.state.paymentDueDay} />
+              <input type='text' name='paymentDueDay' onChange={this.setValue} value={this.state.paymentDueDay} placeholder="MM/DD/YYYY" />
             </div>
           </div>
 
@@ -158,7 +158,7 @@ class AddAccount extends Component {
               <label htmlFor="statementClosingDay">Statement Closing Day</label>
             </div>
             <div className="col-9">
-              <input type='text' name='statementClosingDay' onChange={this.setValue} value={this.state.statementClosingDay} />
+              <input type='text' name='statementClosingDay' onChange={this.setValue} value={this.state.statementClosingDay} placeholder="MM/DD/YYYY" />
             </div>
           </div>
 
@@ -167,7 +167,7 @@ class AddAccount extends Component {
               <label htmlFor="installmentAmount">Installment Amount</label>
             </div>
             <div className="col-9">
-              <input type='text' name='installmentAmount' onChange={this.setValue} value={this.state.installmentAmount} />
+              <input type='text' name='installmentAmount' onChange={this.setValue} value={this.state.installmentAmount} placeholder="Enter installment amount" />
             </div>
           </div>
 
@@ -176,7 +176,7 @@ class AddAccount extends Component {
               <label htmlFor="comments">Comments</label>
             </div>
             <div className="col-9">
-              <input type='text' name='comments' onChange={this.setValue} value={this.state.comments} />
+              <input type='text' name='comments' onChange={this.setValue} value={this.state.comments} placeholder="Enter comments" />
             </div>
           </div>
 

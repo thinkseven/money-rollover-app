@@ -97,7 +97,7 @@ const ShowTransaction = () => {
         <thead>
           <tr>
             <th>
-              Transaction Date
+              Date
             </th>
             <th>
               Name

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,31 +10,57 @@ import ShowTransaction from './Component/Transaction/Show'
 import ShowAccount from './Component/Accounts/Show'
 import AddTransaction from './Component/Transaction/Add';
 import AddAccount from './Component/Accounts/Add';
+
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import './App.css';
+import './Menu.css'
 import './Component/Component.css'
 
+
+
 function App() {
+
+  const [className, setClass] = useState("topnav");
+
+  const expandMenu = (e) => {
+    e.preventDefault()
+    if (className === "topnav") {
+      setClass("topnav responsive");
+    } else {
+      setClass("topnav");
+    }
+    return false;
+  }
+
+  const resetMenu = () => {
+    setClass("topnav");
+  }
 
   return (
     <div className="row">
       <Router>
         <div className="col-12">
-          <nav>
-            <Link to="/Dashboard">
+          <nav className={className}>
+            <Link to="/Dashboard" className="active">
               Dashboard
               </Link>
-            <Link to="/Transactions">
+            <Link to="/Transactions" onClick={resetMenu}>
               Transactions
-              </Link>
-            <Link to="/Accounts">
+            </Link>
+            <Link to="/Accounts" onClick={resetMenu}>
               Accounts
-              </Link>
-            <Link to="/AddAccount">
+            </Link>
+            <Link to="/AddAccount" onClick={resetMenu}>
               Add Account
               </Link>
-            <Link to="/AddTransaction">
+            <Link to="/AddTransaction" onClick={resetMenu}>
               Add Transaction
-              </Link>
+            </Link>
+            <a href="#0" className="icon" onClick={expandMenu}>
+              <FontAwesomeIcon icon={faBars} />
+            </a>
           </nav>
         </div>
         <Switch>
