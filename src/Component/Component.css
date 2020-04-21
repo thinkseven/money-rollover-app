@@ -1,3 +1,22 @@
+table {
+  border-collapse: collapse;
+  position: relative;
+  width: 100%;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: purple;
+  color: white;
+  position: sticky;
+  top: 0;
+}
+
 .msg {
   margin: 10px;
   border: 1px solid blue;

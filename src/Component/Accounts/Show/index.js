@@ -64,8 +64,8 @@ const Edit = (props) => {
     }
   }
 
-  const getDate = (date, length) => {
-    let nextDate = moment(date).add(length, 'days');
+  const getDate = (date) => {
+    let nextDate = moment(date).add(31, 'days');
     let currentDay = moment(date).get('date');
     let nextDay = nextDate.get('date');
     let diffDay = nextDay - currentDay;
@@ -79,29 +79,14 @@ const Edit = (props) => {
   }
 
   const formatDisplay = (name, value, accountType) => {
-    if (name === "paymentDueDay") {
-      if (accountType === "Credit Card" || accountType === "Loan") {
-        return (<div>
-          <div>{getDate(value,30)}</div>
-          <div style={{
-            fontSize: '12px',
-            fontStyle: 'italic'
-          }}>prev: {moment(value).format("ddd MMM D")}</div>
-        </div>)
-      }
-      return moment(value).format("ddd[\r\n]MMM D");
-    }
-    if (name === "statementClosingDay") {
-      if (accountType === "Credit Card" || accountType === "Loan") {
-        return (<div>
-          <div>{getDate(value,31)}</div>
-          <div style={{
-            fontSize: '12px',
-            fontStyle: 'italic'
-          }}>prev: {moment(value).format("ddd MMM D")}</div>
-        </div>)
-      }
-      return moment(value).format("ddd[\r\n]MMM D");
+    if (name === "paymentDueDay" || name === "statementClosingDay") {
+      return (<div>
+        <div>{getDate(value)}</div>
+        <div style={{
+          fontSize: '12px',
+          fontStyle: 'italic'
+        }}>prev: {moment(value).format("ddd MMM D")}</div>
+      </div>)
     }
     return value;
   }

@@ -300,25 +300,6 @@ const ShowTransaction = () => {
   const [accounts, setAccounts] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const setBackground = (transaction) => {
-    if (moment(transaction.postDate).isBefore(moment()) && moment(transaction.dueDate).isBefore(moment())) {
-      return {
-        backgroundColor: 'green'
-      } // paid and verified
-    } else if (moment(transaction.postDate).isBefore(moment(transaction.dueDate))) {
-      return {
-        backgroundColor: 'yellow'
-      } // paid but not verified
-    } else if (moment(transaction.dueDate).isAfter(moment()) && moment(transaction.dueDate).isSame(moment(), 'month')) {
-      return {
-        backgroundColor: 'red'
-      } // not yet paid this month transactions
-    }
-    return {
-      backgroundColor: 'gray'
-    }
-  }
-
   const refreshTransactions = () => {
     setLoading(true)
     setTransactions([])
@@ -355,6 +336,7 @@ const ShowTransaction = () => {
 
   return (
     <div class="col-12">
+      <h1>Today's {moment().format("MM/DD/YYYY")}</h1>
       <table>
         <thead>
           <tr>
@@ -379,13 +361,271 @@ const ShowTransaction = () => {
             <th>
               Comments
             </th>
+            <th>
+              Trash
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            !loading && transactions.filter((entry, index) => {
+              return moment().startOf('day').isSame(moment(entry.dueDate));
+            }).map((entry, index) => {
+              return (
+                <tr key={index}>
+                  <td><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
+                  <td><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
+      </table>
+      <h1>Upcoming in next 2 days</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>
+              Name
+            </th>
+            <th>
+              Due Date
+            </th>
+            <th>
+              Post Date
+            </th>
+            <th>
+              Amount
+            </th>
+            <th>
+              Account
+            </th>
+            <th>
+              Type
+            </th>
+            <th>
+              Comments
+            </th>
+            <th>
+              Trash
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            !loading && transactions.filter((entry, index) => {
+              return moment(entry.dueDate).isBetween(moment().add(1, 'day'), moment().add(2, "days"));
+            }).map((entry, index) => {
+              return (
+                <tr key={index}>
+                  <td><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
+                  <td><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
+      </table>
+      <h1>Current month</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>
+              Name
+            </th>
+            <th>
+              Due Date
+            </th>
+            <th>
+              Post Date
+            </th>
+            <th>
+              Amount
+            </th>
+            <th>
+              Account
+            </th>
+            <th>
+              Type
+            </th>
+            <th>
+              Comments
+            </th>
+            <th>
+              Trash
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            !loading && transactions.filter((entry, index) => {
+              return ((moment(entry.dueDate).month() === moment().month()) && (moment(entry.dueDate).isAfter(moment().add(2, 'days'))))
+            }).map((entry, index) => {
+              return (
+                <tr key={index}>
+                  <td><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
+                  <td><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
+      </table>
+      <h1>Next month</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>
+              Name
+            </th>
+            <th>
+              Due Date
+            </th>
+            <th>
+              Post Date
+            </th>
+            <th>
+              Amount
+            </th>
+            <th>
+              Account
+            </th>
+            <th>
+              Type
+            </th>
+            <th>
+              Comments
+            </th>
+            <th>
+              Trash
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            !loading && transactions.filter((entry, index) => {
+              return (moment(entry.dueDate).month() === moment().add(1, 'month').month())
+            }).map((entry, index) => {
+              return (
+                <tr key={index}>
+                  <td><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
+                  <td><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
+      </table>
+      <h1>Completed transactions</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>
+              Name
+            </th>
+            <th>
+              Due Date
+            </th>
+            <th>
+              Post Date
+            </th>
+            <th>
+              Amount
+            </th>
+            <th>
+              Account
+            </th>
+            <th>
+              Type
+            </th>
+            <th>
+              Comments
+            </th>
+            <th>
+              Trash
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            !loading && transactions.filter((entry, index) => {
+              return moment(entry.dueDate).isBefore(moment().startOf('day'));
+            }).map((entry, index) => {
+              return (
+                <tr key={index}>
+                  <td><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
+                  <td><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
+                  <td><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
+      </table>
+      <h1>All transactions</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>
+              Name
+            </th>
+            <th>
+              Due Date
+            </th>
+            <th>
+              Post Date
+            </th>
+            <th>
+              Amount
+            </th>
+            <th>
+              Account
+            </th>
+            <th>
+              Type
+            </th>
+            <th>
+              Comments
+            </th>
+            <th>
+              Trash
+            </th>
           </tr>
         </thead>
         <tbody>
           {
             !loading && transactions.map((entry, index) => {
               return (
-                <tr key={index} style={setBackground(entry)}>
+                <tr key={index}>
                   <td><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
                   <td><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
                   <td><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
