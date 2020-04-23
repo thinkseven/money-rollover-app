@@ -39,12 +39,21 @@ const Edit = (props) => {
     };
 
     fetch(`/api/v1/money/Account/${props.account.accountId}`, requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        props.refreshAccounts()
-        console.log(result)
+      .then((response) => {
+        if (!response.ok) {
+          throw Error("Failed to update account due to error!!");
+        }
+        return response.text()
       })
-      .catch(error => console.log('error', error));
+      .then(result => {
+        console.log('result', result)
+        props.updateAccount(updateAccount)
+      })
+      .catch(error => {
+        console.log('error', error)
+        props.updateAccount(props.account)
+        setFieldValue(props.account[props.field])
+      });
   }
 
   const highlightDisplay = (name, value, accountType) => {
@@ -144,12 +153,21 @@ const EditType = (props) => {
     };
 
     fetch(`/api/v1/money/Account/${props.account.accountId}`, requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        props.refreshAccounts()
-        console.log(result)
+      .then((response) => {
+        if (!response.ok) {
+          throw Error("Failed to update account due to error!!");
+        }
+        return response.text()
       })
-      .catch(error => console.log('error', error));
+      .then(result => {
+        console.log('result', result)
+        props.updateAccount(updateAccount)
+      })
+      .catch(error => {
+        console.log('error', error)
+        props.updateAccount(props.account)
+        setFieldValue(props.account[props.field])
+      });
   }
 
 
@@ -184,15 +202,10 @@ const ShowAccount = () => {
   const [accounts, setAccounts] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const refreshAccounts = () => {
-    setLoading(true)
-    setAccounts([])
-    fetch("/api/v1/money/Account")
-      .then(res => res.json())
-      .then((data) => {
-        setAccounts(data)
-        setLoading(false)
-      })
+  const updateAccount = (updatedAccount) => {
+    setAccounts(accounts.map((account) => {
+      return updatedAccount.accountId === account.accountId ? updatedAccount : account;
+    }))
   }
 
   useEffect(() => {
@@ -243,14 +256,14 @@ const ShowAccount = () => {
             !loading && accounts.map((account) => {
               return (
                 <tr key={account.accountId}>
-                  <td><Edit field="name" account={account} refreshAccounts={refreshAccounts} /></td>
-                  <td><Edit field="initialBalance" account={account} refreshAccounts={refreshAccounts} /></td>
-                  <td><Edit field="currentBalance" account={account} refreshAccounts={refreshAccounts} /></td>
-                  <td><EditType field="accountType" account={account} refreshAccounts={refreshAccounts} /></td>
-                  <td><Edit field="paymentDueDay" account={account} refreshAccounts={refreshAccounts} /></td>
-                  <td><Edit field="statementClosingDay" account={account} refreshAccounts={refreshAccounts} /></td>
-                  <td><Edit field="installmentAmount" account={account} refreshAccounts={refreshAccounts} /></td>
-                  <td><Edit field="comments" account={account} refreshAccounts={refreshAccounts} /></td>
+                  <td><Edit field="name" account={account} updateAccount={updateAccount} /></td>
+                  <td><Edit field="initialBalance" account={account} updateAccount={updateAccount} /></td>
+                  <td><Edit field="currentBalance" account={account} updateAccount={updateAccount} /></td>
+                  <td><EditType field="accountType" account={account} updateAccount={updateAccount} /></td>
+                  <td><Edit field="paymentDueDay" account={account} updateAccount={updateAccount} /></td>
+                  <td><Edit field="statementClosingDay" account={account} updateAccount={updateAccount} /></td>
+                  <td><Edit field="installmentAmount" account={account} updateAccount={updateAccount} /></td>
+                  <td><Edit field="comments" account={account} updateAccount={updateAccount} /></td>
                 </tr>
               )
             })

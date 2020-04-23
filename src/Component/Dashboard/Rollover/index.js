@@ -129,7 +129,7 @@ const ShowTransaction = () => {
         <tbody>
           {
             !loading && Object.entries(transactions).map(([dueDate, value, index]) => {
-              if (moment().add(1, 'month').month() === moment(dueDate).month()) {
+              if (moment(dueDate).month() >= moment().add(1, 'month').month()) {
                 return value.map((transactionGroup) => {
                   return Object.entries(transactionGroup).map(([transactionName, groupedAccountBalance, index]) => {
                     return (

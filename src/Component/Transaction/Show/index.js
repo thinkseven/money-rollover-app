@@ -4,6 +4,34 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './index.css';
 import moment from 'moment';
 
+const fetchWrapper = (url, method, body, onSuccess, onError) => {
+
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  var requestOptions = {
+    method: method,
+    headers: myHeaders,
+    body: body !== null ? JSON.stringify(body) : ''
+  };
+
+  fetch(url, requestOptions)
+    .then((response) => {
+      if (!response.ok) {
+        throw Error("call failed for url", url, response.body);
+      }
+      return response.text()
+    })
+    .then(result => {
+      console.log(result);
+      onSuccess(result);
+    })
+    .catch(error => {
+      console.log(error);
+      onError(error);
+    });
+}
+
 const Edit = (props) => {
 
   const [isEditable, setEditable] = useState(false);
@@ -19,9 +47,6 @@ const Edit = (props) => {
 
     const updateTransaction = { ...props.transaction, ...modifiedTransaction }
 
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
     var raw = {
       accountId: updateTransaction.accountId,
       name: updateTransaction.name,
@@ -32,20 +57,11 @@ const Edit = (props) => {
       comments: updateTransaction.comments
     }
 
-    var requestOptions = {
-      method: 'PUT',
-      headers: myHeaders,
-      body: JSON.stringify(raw),
-      redirect: 'follow'
-    };
-
-    fetch(`/api/v1/money/Transaction/${props.transaction.transactionId}`, requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        props.refreshTransactions()
-        console.log(result)
-      })
-      .catch(error => console.log('error', error));
+    fetchWrapper(`/api/v1/money/Transaction/${props.transaction.transactionId}`, 'PUT', raw, () => {
+      props.updateTransaction(updateTransaction);
+    }, () => {
+      props.updateTransaction(props.transaction);
+    })
   }
 
   return <div>
@@ -78,9 +94,6 @@ const EditDate = (props) => {
 
     const updateTransaction = { ...props.transaction, ...modifiedTransaction }
 
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
     var raw = {
       accountId: updateTransaction.accountId,
       name: updateTransaction.name,
@@ -91,20 +104,12 @@ const EditDate = (props) => {
       comments: updateTransaction.comments
     }
 
-    var requestOptions = {
-      method: 'PUT',
-      headers: myHeaders,
-      body: JSON.stringify(raw),
-      redirect: 'follow'
-    };
+    fetchWrapper(`/api/v1/money/Transaction/${props.transaction.transactionId}`, 'PUT', raw, () => {
+      props.updateTransaction(updateTransaction);
+    }, () => {
+      props.updateTransaction(props.transaction);
+    })
 
-    fetch(`/api/v1/money/Transaction/${props.transaction.transactionId}`, requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        props.refreshTransactions()
-        console.log(result)
-      })
-      .catch(error => console.log('error', error));
   }
 
   return <div>
@@ -137,9 +142,6 @@ const EditAccount = (props) => {
 
     const updateTransaction = { ...props.transaction, ...modifiedTransaction }
 
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
     var raw = {
       accountId: updateTransaction.accountId,
       name: updateTransaction.name,
@@ -150,20 +152,12 @@ const EditAccount = (props) => {
       comments: updateTransaction.comments
     }
 
-    var requestOptions = {
-      method: 'PUT',
-      headers: myHeaders,
-      body: JSON.stringify(raw),
-      redirect: 'follow'
-    };
+    fetchWrapper(`/api/v1/money/Transaction/${props.transaction.transactionId}`, 'PUT', raw, () => {
+      props.updateTransaction(updateTransaction);
+    }, () => {
+      props.updateTransaction(props.transaction);
+    })
 
-    fetch(`/api/v1/money/Transaction/${props.transaction.transactionId}`, requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        props.refreshTransactions()
-        console.log(result)
-      })
-      .catch(error => console.log('error', error));
   }
 
   const getAccountName = () => {
@@ -213,9 +207,6 @@ const EditType = (props) => {
 
     const updateTransaction = { ...props.transaction, ...modifiedTransaction }
 
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
     var raw = {
       accountId: updateTransaction.accountId,
       name: updateTransaction.name,
@@ -226,20 +217,12 @@ const EditType = (props) => {
       comments: updateTransaction.comments
     }
 
-    var requestOptions = {
-      method: 'PUT',
-      headers: myHeaders,
-      body: JSON.stringify(raw),
-      redirect: 'follow'
-    };
+    fetchWrapper(`/api/v1/money/Transaction/${props.transaction.transactionId}`, 'PUT', raw, () => {
+      props.updateTransaction(updateTransaction);
+    }, () => {
+      props.updateTransaction(props.transaction);
+    })
 
-    fetch(`/api/v1/money/Transaction/${props.transaction.transactionId}`, requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        props.refreshTransactions()
-        console.log(result)
-      })
-      .catch(error => console.log('error', error));
   }
 
   return <div>
@@ -266,27 +249,11 @@ const EditType = (props) => {
 const DeleteTransaction = (props) => {
 
   const handlerClick = () => {
-
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    var raw = "";
-
-    var requestOptions = {
-      method: 'DELETE',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
-    };
-
-    fetch(`/api/v1/money/Transaction/${props.transactionId}`, requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        props.refreshTransactions()
-        console.log(result)
-      })
-      .catch(error => console.log('error', error));
-
+    fetchWrapper(`/api/v1/money/Transaction/${props.transaction.transactionId}`, 'DELETE', null, () => {
+      props.deleteTransaction(props.transaction.transactionId);
+    }, () => {
+      props.updateTransaction(props.transaction);
+    })
   }
 
   return <div>
@@ -300,16 +267,30 @@ const ShowTransaction = () => {
   const [accounts, setAccounts] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const refreshTransactions = () => {
-    setLoading(true)
-    setTransactions([])
-    fetch("/api/v1/money/Transaction")
-      .then(res => res.json())
-      .then((data) => {
-        setTransactions(data)
-        setLoading(false)
-      })
+  const updateTransaction = (updatedTransaction) => {
+    setTransactions(transactions.map((transaction) => {
+      return updatedTransaction.transactionId === transaction.transactionId ? updatedTransaction : transaction;
+    }))
   }
+
+  const deleteTransaction = (transactionId) => {
+    setLoading(true)
+    setTransactions(transactions.filter((transaction) => {
+      return transaction.transactionId !== transactionId
+    }))
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    const fetchAccounts = () => {
+      fetch("/api/v1/money/Account")
+        .then(res => res.json())
+        .then((data) => {
+          setAccounts(data)
+        })
+    }
+    fetchAccounts()
+  }, [])
 
   useEffect(() => {
     const fetchTransactions = () => {
@@ -321,17 +302,6 @@ const ShowTransaction = () => {
         })
     }
     fetchTransactions()
-  }, [])
-
-  useEffect(() => {
-    const fetchAccounts = () => {
-      fetch("/api/v1/money/Account")
-        .then(res => res.json())
-        .then((data) => {
-          setAccounts(data)
-        })
-    }
-    fetchAccounts()
   }, [])
 
   return (
@@ -373,14 +343,14 @@ const ShowTransaction = () => {
             }).map((entry, index) => {
               return (
                 <tr key={index}>
-                  <td><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
-                  <td><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
+                  <td><Edit field="name" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditDate field="dueDate" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditDate field="postDate" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><Edit field="amount" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditAccount field="accountId" transaction={entry} updateTransaction={updateTransaction} accounts={accounts} /></td>
+                  <td><EditType field="transactionType" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><Edit field="comments" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><DeleteTransaction transaction={entry} deleteTransaction={deleteTransaction} updateTransaction={updateTransaction} >Delete</DeleteTransaction></td>
                 </tr>
               )
             })
@@ -424,14 +394,14 @@ const ShowTransaction = () => {
             }).map((entry, index) => {
               return (
                 <tr key={index}>
-                  <td><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
-                  <td><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
+                  <td><Edit field="name" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditDate field="dueDate" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditDate field="postDate" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><Edit field="amount" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditAccount field="accountId" transaction={entry} updateTransaction={updateTransaction} accounts={accounts} /></td>
+                  <td><EditType field="transactionType" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><Edit field="comments" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><DeleteTransaction transaction={entry} deleteTransaction={deleteTransaction} updateTransaction={updateTransaction} >Delete</DeleteTransaction></td>
                 </tr>
               )
             })
@@ -475,14 +445,14 @@ const ShowTransaction = () => {
             }).map((entry, index) => {
               return (
                 <tr key={index}>
-                  <td><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
-                  <td><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
+                  <td><Edit field="name" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditDate field="dueDate" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditDate field="postDate" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><Edit field="amount" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditAccount field="accountId" transaction={entry} updateTransaction={updateTransaction} accounts={accounts} /></td>
+                  <td><EditType field="transactionType" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><Edit field="comments" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><DeleteTransaction transaction={entry} deleteTransaction={deleteTransaction} updateTransaction={updateTransaction} >Delete</DeleteTransaction></td>
                 </tr>
               )
             })
@@ -526,14 +496,14 @@ const ShowTransaction = () => {
             }).map((entry, index) => {
               return (
                 <tr key={index}>
-                  <td><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
-                  <td><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
+                  <td><Edit field="name" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditDate field="dueDate" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditDate field="postDate" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><Edit field="amount" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditAccount field="accountId" transaction={entry} updateTransaction={updateTransaction} accounts={accounts} /></td>
+                  <td><EditType field="transactionType" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><Edit field="comments" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><DeleteTransaction transaction={entry} deleteTransaction={deleteTransaction} updateTransaction={updateTransaction} >Delete</DeleteTransaction></td>
                 </tr>
               )
             })
@@ -577,14 +547,14 @@ const ShowTransaction = () => {
             }).map((entry, index) => {
               return (
                 <tr key={index}>
-                  <td><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
-                  <td><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
+                  <td><Edit field="name" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditDate field="dueDate" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditDate field="postDate" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><Edit field="amount" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditAccount field="accountId" transaction={entry} updateTransaction={updateTransaction} accounts={accounts} /></td>
+                  <td><EditType field="transactionType" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><Edit field="comments" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><DeleteTransaction transaction={entry} deleteTransaction={deleteTransaction} updateTransaction={updateTransaction} >Delete</DeleteTransaction></td>
                 </tr>
               )
             })
@@ -626,14 +596,14 @@ const ShowTransaction = () => {
             !loading && transactions.map((entry, index) => {
               return (
                 <tr key={index}>
-                  <td><Edit field="name" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditDate field="dueDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditDate field="postDate" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><Edit field="amount" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><EditAccount field="accountId" transaction={entry} refreshTransactions={refreshTransactions} accounts={accounts} /></td>
-                  <td><EditType field="transactionType" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><Edit field="comments" transaction={entry} refreshTransactions={refreshTransactions} /></td>
-                  <td><DeleteTransaction transactionId={entry.transactionId} refreshTransactions={refreshTransactions}>Delete</DeleteTransaction></td>
+                  <td><Edit field="name" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditDate field="dueDate" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditDate field="postDate" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><Edit field="amount" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><EditAccount field="accountId" transaction={entry} updateTransaction={updateTransaction} accounts={accounts} /></td>
+                  <td><EditType field="transactionType" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><Edit field="comments" transaction={entry} updateTransaction={updateTransaction} /></td>
+                  <td><DeleteTransaction transaction={entry} deleteTransaction={deleteTransaction} updateTransaction={updateTransaction} >Delete</DeleteTransaction></td>
                 </tr>
               )
             })
