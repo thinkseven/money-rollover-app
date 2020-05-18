@@ -110,7 +110,7 @@ class AddTransaction extends Component {
       })
     })
 
-    if ((this.state.transactionType1 !== "None" || this.state.transactionType1 !== '') && this.state.accountId1 !== '0' && this.state.amount1 !== '0') {
+    if ((this.state.transactionType1 !== 'None' || this.state.transactionType1 !== '') && this.state.accountId1 !== 0 && this.state.amount1 !== '') {
 
       var raw1 = {
         accountId: this.state.accountId1,
@@ -153,7 +153,7 @@ class AddTransaction extends Component {
       })
     }
 
-    if ((this.state.transactionType2 !== "None" || this.state.transactionType2 !== '') && this.state.accountId2 !== '0' && this.state.amount2 !== '0') {
+    if ((this.state.transactionType2 !== 'None' || this.state.transactionType2 !== '') && this.state.accountId2 !== 0 && this.state.amount2 !== '') {
 
       var raw2 = {
         accountId: this.state.accountId2,
@@ -196,7 +196,7 @@ class AddTransaction extends Component {
       })
     }
 
-    if ((this.state.transactionType3 !== "None" || this.state.transactionType3 !== '') && this.state.accountId3 !== '0' && this.state.amount3 !== '0') {
+    if ((this.state.transactionType3 !== "None" || this.state.transactionType3 !== '') && this.state.accountId3 !== 0 && this.state.amount3 !== '') {
 
       var raw3 = {
         accountId: this.state.accountId3,

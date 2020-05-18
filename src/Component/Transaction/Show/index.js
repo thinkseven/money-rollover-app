@@ -177,7 +177,7 @@ const EditAccount = (props) => {
     }
     {
       isEditable && (
-        <select name="selectAccount" value={accountId} onChange={(event) => {
+        <select name={props.field} value={accountId} onChange={(event) => {
           setAccount(event.target.value)
         }} onBlur={(event) => {
           updateTransaction(event)
