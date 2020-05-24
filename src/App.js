@@ -11,6 +11,8 @@ import ShowAccount from './Component/Accounts/Show'
 import AddTransaction from './Component/Transaction/Add';
 import AddAccount from './Component/Accounts/Add';
 
+import Equalizer from './Component/Utilities/Equalizer';
+
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -58,6 +60,9 @@ function App() {
             <Link to="/AddTransaction" onClick={resetMenu}>
               Add Transaction
             </Link>
+            <Link to="/Utilities" onClick={resetMenu}>
+              Utilities
+            </Link>
             <a href="#0" className="icon" onClick={expandMenu}>
               <FontAwesomeIcon icon={faBars} />
             </a>
@@ -78,6 +83,9 @@ function App() {
           </Route>
           <Route path="/AddTransaction">
             <AddTransaction />
+          </Route>
+          <Route path="/Utilities">
+            <Equalizer />
           </Route>
           <Route path="/">
             <Rollover />
