@@ -29,11 +29,11 @@ const Equalizer = () => {
     let updateBalance1 = 0
     let updateBalance2 = 0
 
-    if (parseFloat(input.balance1) < parseFloat(input.amount)) {
+    if (parseFloat(input.balance1) < (parseFloat(input.amount)/2)) {
       transactAmt2 = parseFloat(input.balance2) - parseFloat(input.amount);
       updateBalance1 = parseFloat(input.balance1) - transactAmt1;
       updateBalance2 = parseFloat(input.balance2) - transactAmt2;
-    } else if (parseFloat(input.balance2) < parseFloat(input.amount)) {
+    } else if (parseFloat(input.balance2) < (parseFloat(input.amount)/2)) {
       transactAmt1 = parseFloat(input.balance1) - parseFloat(input.amount);
       updateBalance1 = parseFloat(input.balance1) - transactAmt1;
       updateBalance2 = parseFloat(input.balance2) - transactAmt2;
